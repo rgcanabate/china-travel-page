@@ -350,7 +350,8 @@
     font-family: 'Ma Shan Zheng', cursive; font-size: 1.6rem; color: var(--red);
     text-align: center; margin-bottom: 1.2rem;
   }
-  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  /* minmax(0,1fr) i no 1fr: si no, els noms llargs eixamplen les columnes i el mòbil es desplaça de costat */
+  .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
   .cal-head {
     text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--red-deep);
     padding: 0.5rem 0; letter-spacing: 0.04em; text-transform: uppercase;
@@ -359,6 +360,7 @@
     min-height: 92px; background: #fff; border-radius: 4px; padding: 0.4rem 0.45rem;
     border: 1px solid rgba(201,154,59,0.2); position: relative; font-size: 0.72rem;
     display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 0; overflow-wrap: anywhere;
   }
   .cal-cell:hover { transform: translateY(-3px); box-shadow: 0 6px 16px var(--shadow); z-index: 2; }
   .cal-cell.empty { background: transparent; border: none; }
@@ -642,7 +644,8 @@
   <div class="wrap">
     <span class="section-tag reveal">私密</span>
     <h2 class="section-title reveal">Zona privada</h2>
-    <div class="lock-box reveal" id="lockBox">
+    <!-- Sense "reveal": l'única manera d'entrar no pot dependre d'una animació d'scroll -->
+    <div class="lock-box" id="lockBox">
       <div class="lock-ico">🔒</div>
       <p class="lock-txt">Hotels, vols, pressupost i documents del viatge.<br>Contingut xifrat amb AES-256 · cal la contrasenya del grup.</p>
       <form class="lock-form" id="lockForm">
@@ -733,6 +736,19 @@
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
 
+  // Xarxa de seguretat: si l'animació d'aparició no s'arriba a disparar (navegador antic,
+  // salt directe a una ancora, moviment reduït…), ensenya-ho tot igualment.
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    setTimeout(() => {
+      revealEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible');
+      });
+    }, 2500);
+  }
+
   // Also handle budget bars inside the grid (grid itself is .reveal)
   const budgetObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -776,6 +792,12 @@
     );
   }
 
+  // Safari en navegació privada llança una excepció en escriure a localStorage.
+  // Recordar la contrasenya és una comoditat: no pot impedir mai l'accés.
+  const remember = (v) => { try { localStorage.setItem(PASS_KEY, v); } catch {} };
+  const recall = () => { try { return localStorage.getItem(PASS_KEY); } catch { return null; } };
+  const forget = () => { try { localStorage.removeItem(PASS_KEY); } catch {} };
+
   async function unlock(password) {
     const key = await derive(password, fromB64(payload.kdf.salt));
     const buf = await crypto.subtle.decrypt(
@@ -806,8 +828,8 @@
       lockMsg.textContent = 'Desxifrant…';
       try {
         const html = await unlock(password);
-        localStorage.setItem(PASS_KEY, password);
-        render(html);
+        render(html);          // primer obre…
+        remember(password);    // …i després recorda: si això falla, ja hi has entrat
       } catch {
         lockMsg.className = 'lock-msg err';
         lockMsg.textContent = 'Contrasenya incorrecta.';
@@ -818,11 +840,11 @@
     });
 
     // Si ja s'ha entrat en aquest dispositiu, obre sense preguntar.
-    const saved = localStorage.getItem(PASS_KEY);
-    if (saved) unlock(saved).then(render).catch(() => localStorage.removeItem(PASS_KEY));
+    const saved = recall();
+    if (saved) unlock(saved).then(render).catch(forget);
 
     lockAgain.addEventListener('click', () => {
-      localStorage.removeItem(PASS_KEY);
+      forget();
       privatContent.innerHTML = '';
       lockBox.hidden = false;
       lockAgain.hidden = true;
