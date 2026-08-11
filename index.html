@@ -181,6 +181,57 @@
   }
   .gal-grid img:hover { transform: scale(1.03); filter: saturate(1.1); }
 
+  /* ZONA PRIVADA */
+  .lock-box {
+    max-width: 520px; margin: 0 auto; text-align: center;
+    background: var(--paper); border: 1px solid rgba(201, 154, 59, 0.45);
+    border-radius: 14px; padding: 2.2rem 1.6rem;
+    box-shadow: 0 10px 30px var(--shadow);
+  }
+  .lock-ico { font-size: 2.4rem; line-height: 1; margin-bottom: 0.7rem; }
+  .lock-txt { font-size: 0.95rem; color: #6b5d55; margin-bottom: 1.3rem; }
+  .lock-form { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+  .lock-form input {
+    flex: 1 1 220px; min-width: 0; padding: 0.75rem 0.9rem;
+    font-family: inherit; font-size: 1rem; color: var(--ink);
+    background: #fff; border: 1px solid rgba(26, 14, 12, 0.2); border-radius: 8px;
+  }
+  .lock-form input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .lock-form button {
+    padding: 0.75rem 1.4rem; font-family: inherit; font-size: 1rem; font-weight: 700;
+    color: var(--cream); background: var(--red); border: 0; border-radius: 8px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lock-form button:hover { background: var(--red-deep); }
+  .lock-form button:disabled { opacity: 0.6; cursor: progress; }
+  .lock-msg { min-height: 1.3rem; margin-top: 0.9rem; font-size: 0.9rem; font-weight: 600; }
+  .lock-msg.err { color: var(--red); }
+  .lock-msg.ok { color: #4a7c3f; }
+  .lock-again {
+    display: block; margin: 2.5rem auto 0; padding: 0.5rem 1rem;
+    font-family: inherit; font-size: 0.82rem; color: #6b5d55;
+    background: none; border: 1px solid rgba(26, 14, 12, 0.18); border-radius: 20px; cursor: pointer;
+  }
+  .lock-again:hover { color: var(--red); border-color: var(--red); }
+  .priv-h {
+    font-family: 'Noto Serif SC', serif; font-size: 1.35rem; font-weight: 700; color: var(--red-deep);
+    margin: 2.8rem 0 1.1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(201, 154, 59, 0.4);
+  }
+  .priv-h:first-child { margin-top: 0.5rem; }
+  .priv-flights { display: grid; gap: 0.7rem; }
+  .priv-flight {
+    background: var(--paper); border-left: 4px solid var(--gold);
+    border-radius: 8px; padding: 0.85rem 1.1rem; font-size: 0.95rem;
+  }
+  .priv-flight b { color: var(--red-deep); }
+  .priv-note { font-size: 0.85rem; color: #6b5d55; font-style: italic; margin-top: 0.8rem; }
+  .priv-doc {
+    background: #FFFBF2; border: 1px dashed rgba(201, 154, 59, 0.7);
+    border-radius: 10px; padding: 1.2rem; font-size: 0.95rem;
+  }
+  .priv-doc a { color: var(--red); font-weight: 700; }
+
   /* BUDGET */
   .budget-grid { display: grid; gap: 1rem; max-width: 760px; }
   .budget-row { }
@@ -352,9 +403,8 @@
   <a href="#calendari">Calendari</a>
   <a href="#itinerari">Itinerari</a>
   <a href="#diaadia">Dia a dia</a>
-  <a href="#hotels">Hotels</a>
+  <a href="#privat">🔒 Privat</a>
   <a href="#galeria">Galeria</a>
-  <a href="#pressupost">Pressupost</a>
   <a href="#logistica">Logística</a>
 </nav>
 
@@ -544,7 +594,7 @@
     <!-- CHENGDU -->
     <div class="dbd-city-block reveal">
       <div class="dbd-city-head"><span class="name">Chengdu</span><span class="cn">成都</span><span class="range">dc 9 – dis 13 set</span></div>
-      <div class="dbd-move">✈ Dc 9, 15:25 — Vol JD5559 Pequín Daxing (PKX) → Chengdu Tianfu (T2), arribada 18:15</div>
+      <div class="dbd-move">✈ Dc 9, 15:25 — Vol intern Pequín Daxing (PKX) → Chengdu Tianfu (T2), arribada 18:15</div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">9</div><div class="dm">dc</div></div><div class="dbd-content"><div class="title">Arribada</div><div class="desc">Arribeu al vespre. Check-in i primer sopar sichuan. Descans.</div></div></div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">10</div><div class="dm">dj</div></div><div class="dbd-content"><div class="title">Pandes</div><div class="desc">Base d'investigació del panda gegant ben d'hora (sortir del hotel ~7h per ser a l'obertura a les 7:30, quan estan actius). A la tarda: Monestir Wenshu i People's Park.</div><div class="tip">Reserva online obligatòria + passaport.</div></div></div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">11</div><div class="dm">dv</div></div><div class="dbd-content"><div class="title">Excursió: Gran Buda de Leshan</div><div class="desc">Dia d'excursió al Buda gegant tallat a la roca (~1h en tren), el Buda de pedra més gran del món. Opcional combinar amb Mont Emei.</div></div></div>
@@ -573,7 +623,7 @@
     <!-- SHANGHAI -->
     <div class="dbd-city-block reveal">
       <div class="dbd-city-head"><span class="name">Shanghai</span><span class="cn">上海</span><span class="range">dis 19 – dl 21 set</span></div>
-      <div class="dbd-move">✈ Dis 19, 13:00 — Vol FM7226 Zhangjiajie (T2) → Shanghai Pudong (T1), arribada 14:55</div>
+      <div class="dbd-move">✈ Dis 19, 13:00 — Vol intern Zhangjiajie (T2) → Shanghai Pudong (T1), arribada 14:55</div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">19</div><div class="dm">dis</div></div><div class="dbd-content"><div class="title">Arribada + el Bund de nit</div><div class="desc">Arribeu a les 14:55 a Pudong. Trasllat al centre, check-in i reserveu la tarda-nit per al Bund: el skyline de Pudong il·luminat des del passeig. El moment estrella.</div></div></div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">20</div><div class="dm">diu</div></div><div class="dbd-content"><div class="title">Pudong i les altures</div><div class="desc">Creueu a Pudong. Pugeu a un mirador (Shanghai Tower, la més alta, o la Perla d'Orient). Modernitat en estat pur.</div></div></div>
       <div class="dbd-day"><div class="dbd-daynum"><div class="d">21</div><div class="dm">dl</div></div><div class="dbd-content"><div class="title">Shanghai amb calma + sortida</div><div class="desc">Dia més local: Barri Francès (cafès, arbres, arquitectura colonial), jardins Yuyuan, mercats. Check-out i última nit fins a anar a l'aeroport.</div><div class="tip">El vol surt el dt 22 a les 00:40, o sea que sortiu cap a l'aeroport la nit del 21. Considereu late check-out per descansar abans.</div></div></div>
@@ -588,48 +638,21 @@
 </svg>
 
 <!-- HOTELS -->
-<section class="hotels" id="hotels">
+<section class="hotels" id="privat">
   <div class="wrap">
-    <span class="section-tag reveal">酒店</span>
-    <h2 class="section-title reveal">Hotels reservats</h2>
-    <div class="hotels-table">
-      <div class="hotel-card reveal">
-        <div class="h-city">Pequín<span class="h-cn">北京</span></div>
-        <div class="h-name">Happy Dragon Imperial Garden Courtyard<span class="h-zone">Forbidden City · anglès fluid</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=39.921094,116.423294&query_place_id=ChIJGVtcRCqt8TURFWZaSKvXMps" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
-        <div class="h-dates">5–9 set<span class="h-nights">4 nits</span></div>
-        <div class="h-price"><span class="h-total">876€</span><span class="h-ppn">55€/pers·nit</span></div>
-      </div>
-      <div class="hotel-card reveal">
-        <div class="h-city">Chengdu<span class="h-cn">成都</span></div>
-        <div class="h-name">Echeng Hotel Chunxi Road Taikoo Li<span class="h-zone">Chunxi Rd / Taikoo Li</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=30.65878,104.074763&query_place_id=ChIJY9tl7zjF7zYRYZ3Yl0Evvns" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
-        <div class="h-dates">9–14 set<span class="h-nights">5 nits</span></div>
-        <div class="h-price"><span class="h-total">445€</span><span class="h-ppn">22€/pers·nit</span></div>
-      </div>
-      <div class="hotel-card reveal">
-        <div class="h-city">Chongqing<span class="h-cn">重庆</span></div>
-        <div class="h-name">Tianlai Yunyun River View (Raffles City)<span class="h-zone">Jiefangbei / Yuzhong</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=29.557671,106.581905&query_place_id=ChIJ-Ua5WIc0kzYR1SfNNXM9NUg" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
-        <div class="h-dates">14–16 set<span class="h-nights">2 nits</span></div>
-        <div class="h-price"><span class="h-total">154€</span><span class="h-ppn">19€/pers·nit</span></div>
-      </div>
-      <div class="hotel-card reveal">
-        <div class="h-city">Zhangjiajie<span class="h-cn">张家界</span></div>
-        <div class="h-name">All Seasons Lodge<span class="h-zone">Wulingyuan · porta est del parc</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=One+Year+Four+Season+Theme+Inn+Wulingyuan+Zhangjiajie" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
-        <div class="h-dates">16–19 set<span class="h-nights">3 nits</span></div>
-        <div class="h-price"><span class="h-total">124€</span><span class="h-ppn">10€/pers·nit</span></div>
-      </div>
-      <div class="hotel-card reveal">
-        <div class="h-city">Shanghai<span class="h-cn">上海</span></div>
-        <div class="h-name">Atour Hotel Nanjing East Road<span class="h-zone">Nanjing East Road</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=31.235105,121.488254&query_place_id=ChIJIelWHFlwsjURVImuWhdnv84" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
-        <div class="h-dates">19–21 set<span class="h-nights">2 nits</span></div>
-        <div class="h-price"><span class="h-total">274€</span><span class="h-ppn">34€/pers·nit</span></div>
-      </div>
+    <span class="section-tag reveal">私密</span>
+    <h2 class="section-title reveal">Zona privada</h2>
+    <div class="lock-box reveal" id="lockBox">
+      <div class="lock-ico">🔒</div>
+      <p class="lock-txt">Hotels, vols, pressupost i documents del viatge.<br>Contingut xifrat amb AES-256 · cal la contrasenya del grup.</p>
+      <form class="lock-form" id="lockForm">
+        <input type="password" id="lockPass" placeholder="Contrasenya del grup" autocomplete="current-password" spellcheck="false">
+        <button type="submit" id="lockBtn">Desbloquejar</button>
+      </form>
+      <div class="lock-msg" id="lockMsg" role="alert"></div>
     </div>
-    <div class="hotels-summary reveal">
-      <div class="hs-item"><div class="hs-num">1.873€</div><div class="hs-label">Total grup (4 pers · 16 nits)</div></div>
-      <div class="hs-item"><div class="hs-num">468€</div><div class="hs-label">Per persona</div></div>
-      <div class="hs-item"><div class="hs-num">29€</div><div class="hs-label">Mitjana per persona i nit</div></div>
-    </div>
-    <p class="hotels-note reveal">Tots reservats via Booking amb cancel·lació gratuïta · preus reals confirmats</p>
+    <div id="privatContent"></div>
+    <button class="lock-again" id="lockAgain" hidden>🔒 Tornar a bloquejar en aquest dispositiu</button>
   </div>
 </section>
 
@@ -657,24 +680,6 @@
 </section>
 
 <!-- PRESSUPOST -->
-<section class="sec-cream" id="pressupost">
-  <div class="wrap">
-    <span class="section-tag reveal">预算</span>
-    <h2 class="section-title reveal">Pressupost per persona</h2>
-    <div class="budget-grid reveal">
-      <div class="budget-row"><div class="label"><span>Vols internacionals (ja comprats)</span><span class="cost">1.425€</span></div><div class="bar"><span data-w="100"></span></div></div>
-      <div class="budget-row"><div class="label"><span>2 vols interns (preu real)</span><span class="cost">324€</span></div><div class="bar"><span data-w="23"></span></div></div>
-      <div class="budget-row"><div class="label"><span>2 trens bala</span><span class="cost">~60€</span></div><div class="bar"><span data-w="4"></span></div></div>
-      <div class="budget-row"><div class="label"><span>Allotjament (16 nits · preu real)</span><span class="cost">468€</span></div><div class="bar"><span data-w="31"></span></div></div>
-      <div class="budget-row"><div class="label"><span>Menjar</span><span class="cost">~450€</span></div><div class="bar"><span data-w="32"></span></div></div>
-      <div class="budget-row"><div class="label"><span>Transport urbà</span><span class="cost">~90€</span></div><div class="bar"><span data-w="6"></span></div></div>
-      <div class="budget-row"><div class="label"><span>Entrades i excursions</span><span class="cost">~250€</span></div><div class="bar"><span data-w="18"></span></div></div>
-      <div class="budget-row"><div class="label"><span>Assegurança</span><span class="cost">~90€</span></div><div class="bar"><span data-w="6"></span></div></div>
-    </div>
-    <div class="budget-total reveal"><span>TOTAL APROXIMAT</span><span class="amount">~3.160€</span></div>
-    <p class="budget-note reveal">Vols internacionals: 1.425€/persona. Vols interns: Pequín→Chengdu (570€ els 4) i Zhangjiajie→Shanghai (726€ els 4). Amb marge per imprevistos i capricis: comptar ~3.300–3.500€ per estar tranquils.</p>
-  </div>
-</section>
 
 <svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
   <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
@@ -687,7 +692,7 @@
     <h2 class="section-title reveal">Logística essencial</h2>
     <div class="log-grid">
       <div class="log-card reveal"><h3>🛂 Sense visat</h3><p>Exempció per a espanyols fins a 30 dies (vigent fins 31/12/2026). No cal tràmit d'ambaixada.</p></div>
-      <div class="log-card reveal" style="border-top-color:var(--red);background:#FFF8F0;"><h3>📝 E-Arrival Card (OBLIGATÒRIA)</h3><p>Formulari online gratuït, cal omplir-lo 48-72h abans d'arribar. Web oficial: <b>s.nia.gov.cn</b> (es pot posar en espanyol dalt a la dreta). Compte amb webs intermediàries que cobren! Tingueu a mà: passaport, vol d'arribada (Air China 4 set), i adreça del 1r hotel (Happy Dragon, Pequín). Guardeu el codi QR que us donarà.</p></div>
+      <div class="log-card reveal" style="border-top-color:var(--red);background:#FFF8F0;"><h3>📝 E-Arrival Card (OBLIGATÒRIA)</h3><p>Formulari online gratuït, cal omplir-lo 48-72h abans d'arribar. Web oficial: <b>s.nia.gov.cn</b> (es pot posar en espanyol dalt a la dreta). Compte amb webs intermediàries que cobren! Tingueu a mà: passaport, vol d'arribada i adreça del 1r hotel de Pequín (ho trobareu tot a la zona privada). Guardeu el codi QR que us donarà.</p></div>
       <div class="log-card reveal"><h3>📶 eSIM amb VPN (Holafly)</h3><p>eSIM amb dades il·limitades i VPN integrada per saltar el firewall (Google, WhatsApp, Instagram). ~45-50€ per persona per 18 dies. L'iPhone 17 la instal·la sol. Millor una per persona.</p></div>
       <div class="log-card reveal"><h3>🔒 Sobre la VPN</h3><p>Amb Holafly no cal VPN a part: ja va integrada. NO n'instal·lis una altra a sobre (es poden interferir). Tingues Google Maps offline descarregat com a reserva.</p></div>
       <div class="log-card reveal"><h3>📱 Pagaments mòbil</h3><p>Configura Alipay amb el passaport ABANS de sortir (la verificació pot trigar 24h). Es paga gairebé tot amb el mòbil. Evita la "TourCard" d'Alipay: té un 5% de comissió amagat.</p></div>
@@ -708,6 +713,8 @@
 </footer>
 
 <button class="top-btn" id="topBtn" aria-label="Tornar amunt">↑</button>
+
+<script id="privatPayload" type="application/json">{"v":1,"kdf":{"name":"PBKDF2","hash":"SHA-256","iterations":300000,"salt":"E7WuphpCXqalMgXSBfGF5Q=="},"cipher":"AES-GCM","iv":"QiRqYcCGN9udT+1G","ct":"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"}</script>
 
 <script>
   // Reveal on scroll
@@ -745,6 +752,88 @@
     else topBtn.classList.remove('show');
   });
   topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ---- Zona privada: desxifrat AES-256-GCM al navegador ----
+  const lockForm = document.getElementById('lockForm');
+  const lockPass = document.getElementById('lockPass');
+  const lockBtn = document.getElementById('lockBtn');
+  const lockMsg = document.getElementById('lockMsg');
+  const lockBox = document.getElementById('lockBox');
+  const privatContent = document.getElementById('privatContent');
+  const lockAgain = document.getElementById('lockAgain');
+  const PASS_KEY = 'xina_privat_pass';
+
+  const payload = JSON.parse(document.getElementById('privatPayload').textContent || 'null');
+  const fromB64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+  async function derive(password, salt) {
+    const material = await crypto.subtle.importKey(
+      'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: payload.kdf.iterations, hash: payload.kdf.hash },
+      material, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+    );
+  }
+
+  async function unlock(password) {
+    const key = await derive(password, fromB64(payload.kdf.salt));
+    const buf = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: fromB64(payload.iv) }, key, fromB64(payload.ct)
+    );
+    return new TextDecoder().decode(buf);
+  }
+
+  function render(html) {
+    privatContent.innerHTML = html;
+    lockBox.hidden = true;
+    lockAgain.hidden = false;
+    // Les animacions d'aparició no coneixen aquest contingut: activa-les ara.
+    privatContent.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    privatContent.querySelectorAll('.bar span').forEach(b => { b.style.width = b.dataset.w + '%'; });
+    // Ancoratges de navegació que abans vivien a la pàgina pública.
+    const nav = document.querySelector('nav a[href="#privat"]');
+    if (nav) nav.textContent = '🔓 Privat';
+  }
+
+  if (payload) {
+    lockForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = lockPass.value;
+      if (!password) return;
+      lockBtn.disabled = true;
+      lockMsg.className = 'lock-msg';
+      lockMsg.textContent = 'Desxifrant…';
+      try {
+        const html = await unlock(password);
+        localStorage.setItem(PASS_KEY, password);
+        render(html);
+      } catch {
+        lockMsg.className = 'lock-msg err';
+        lockMsg.textContent = 'Contrasenya incorrecta.';
+        lockPass.select();
+      } finally {
+        lockBtn.disabled = false;
+      }
+    });
+
+    // Si ja s'ha entrat en aquest dispositiu, obre sense preguntar.
+    const saved = localStorage.getItem(PASS_KEY);
+    if (saved) unlock(saved).then(render).catch(() => localStorage.removeItem(PASS_KEY));
+
+    lockAgain.addEventListener('click', () => {
+      localStorage.removeItem(PASS_KEY);
+      privatContent.innerHTML = '';
+      lockBox.hidden = false;
+      lockAgain.hidden = true;
+      lockPass.value = '';
+      lockMsg.className = 'lock-msg ok';
+      lockMsg.textContent = 'Bloquejat en aquest dispositiu.';
+      const nav = document.querySelector('nav a[href="#privat"]');
+      if (nav) nav.textContent = '🔒 Privat';
+    });
+  }
+
 </script>
 </body>
 </html>
