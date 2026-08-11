@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viatge a la Xina · Setembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B01E28;
+    --red-deep: #7E1419;
+    --gold: #C99A3B;
+    --gold-light: #E3C878;
+    --ink: #1A0E0C;
+    --cream: #F7EFE3;
+    --paper: #FBF6EC;
+    --shadow: rgba(26, 14, 12, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-weight: 700; line-height: 1.2; }
+
+  /* Subtle repeating pagoda pattern background */
+  .pattern-bg {
+    position: fixed; inset: 0; z-index: 0; opacity: 0.025; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23B01E28' stroke-width='2'%3E%3Cpath d='M60 10 L85 30 L35 30 Z'/%3E%3Crect x='42' y='32' width='36' height='30'/%3E%3Cpath d='M38 64 L82 64 L74 68 L46 68 Z'/%3E%3Cline x1='60' y1='32' x2='60' y2='62'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(126, 20, 25, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    gap: 2rem; padding: 0.9rem 1rem;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: var(--cream); text-decoration: none; font-size: 0.9rem;
+    letter-spacing: 0.05em; transition: color 0.25s; position: relative;
+    font-weight: 600;
+  }
+  nav a::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
+    background: var(--gold-light); transition: width 0.28s;
+  }
+  nav a:hover { color: var(--gold-light); }
+  nav a:hover::after { width: 100%; }
+
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #2A0B0C 0%, #7E1419 60%, #B01E28 100%);
+    color: var(--cream);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 6rem 1.5rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-glyphs {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-family: 'Ma Shan Zheng', cursive; font-size: 34vw; color: rgba(201, 154, 59, 0.09);
+    white-space: nowrap; pointer-events: none; user-select: none;
+  }
+  .hero .lantern {
+    position: absolute; font-size: 2.2rem; opacity: 0.55; animation: sway 4s ease-in-out infinite;
+  }
+  .hero .lantern.l1 { top: 14%; left: 12%; animation-delay: 0s; }
+  .hero .lantern.l2 { top: 20%; right: 14%; animation-delay: 1.2s; }
+  .hero .lantern.l3 { bottom: 16%; left: 18%; animation-delay: 2.1s; }
+  @keyframes sway { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
+  .hero-content { position: relative; z-index: 2; }
+  .hero .cn-title {
+    font-family: 'Ma Shan Zheng', cursive; font-size: clamp(3.5rem, 12vw, 8rem);
+    color: var(--gold-light); text-shadow: 0 4px 20px rgba(0,0,0,0.4); margin-bottom: 0.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.8rem); letter-spacing: 0.06em; margin-bottom: 1.2rem;
+    font-weight: 900;
+  }
+  .hero .subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem); color: var(--gold-light); letter-spacing: 0.08em;
+    margin-bottom: 0.5rem; font-weight: 600;
+  }
+  .hero .dates { font-size: 0.95rem; opacity: 0.85; margin-bottom: 2.5rem; }
+  .hero .cta {
+    display: inline-block; background: var(--gold); color: var(--ink); text-decoration: none;
+    padding: 0.85rem 2.2rem; border-radius: 2px; font-weight: 700; letter-spacing: 0.05em;
+    transition: transform 0.25s, box-shadow 0.25s; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    font-size: 0.95rem;
+  }
+  .hero .cta:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.4); }
+
+  /* Great Wall divider */
+  .wall-divider { width: 100%; height: 48px; display: block; color: var(--gold); }
+
+  /* SECTION SHELL */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 1.5rem; }
+  .section-tag {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 2rem; color: var(--red);
+    display: block; margin-bottom: 0.2rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--ink); margin-bottom: 2.5rem;
+    position: relative; padding-bottom: 0.8rem;
+  }
+  .section-title::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 70px; height: 3px; background: var(--gold);
+  }
+
+  /* REVEAL ANIMATION */
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ROUTE MAP */
+  .route { background: var(--cream); }
+  .route-track {
+    display: flex; align-items: stretch; justify-content: space-between; gap: 0.5rem;
+    flex-wrap: wrap; position: relative;
+  }
+  .stop {
+    flex: 1; min-width: 150px; background: var(--paper); border-radius: 4px; padding: 1.5rem 1rem;
+    text-align: center; box-shadow: 0 4px 16px var(--shadow); border-top: 4px solid var(--gold);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .stop:hover { transform: translateY(-6px); box-shadow: 0 10px 28px var(--shadow); }
+  .stop.nature { border-top-color: #3B7A57; }
+  .stop.modern { border-top-color: var(--red); }
+  .stop .num {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 1.5rem; color: var(--gold); line-height: 1;
+  }
+  .stop .city { font-size: 1.15rem; font-weight: 700; margin: 0.4rem 0 0.2rem; }
+  .stop .cn { font-family: 'Ma Shan Zheng', cursive; color: var(--red); font-size: 1.3rem; }
+  .stop .days {
+    display: inline-block; margin-top: 0.6rem; background: var(--red); color: #fff;
+    font-size: 0.78rem; padding: 0.2rem 0.7rem; border-radius: 2px; font-weight: 600;
+  }
+  .stop.nature .days { background: #3B7A57; }
+  .transport-note {
+    text-align: center; margin-top: 2rem; font-size: 0.9rem; color: var(--red-deep);
+    font-weight: 600; background: rgba(201,154,59,0.12); padding: 1rem; border-radius: 4px;
+    border-left: 4px solid var(--gold);
+  }
+
+  /* ITINERARY */
+  .itin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .itin-card {
+    background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 18px var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s; border: 1px solid rgba(201,154,59,0.25);
+  }
+  .itin-card:hover { transform: translateY(-6px); box-shadow: 0 14px 34px var(--shadow); }
+  .itin-card .head {
+    background: linear-gradient(135deg, var(--red-deep), var(--red)); color: var(--cream);
+    padding: 1.2rem 1.4rem; display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .itin-card .head .name { font-size: 1.3rem; font-weight: 700; }
+  .itin-card .head .cn { font-family: 'Ma Shan Zheng', cursive; font-size: 1.6rem; color: var(--gold-light); }
+  .itin-card .body { padding: 1.3rem 1.4rem; }
+  .itin-card .days-label { color: var(--gold); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.8rem; letter-spacing: 0.04em; }
+  .itin-card ul { list-style: none; }
+  .itin-card li { padding: 0.35rem 0 0.35rem 1.5rem; position: relative; font-size: 0.95rem; }
+  .itin-card li::before { content: '❋'; position: absolute; left: 0; color: var(--gold); font-size: 0.85rem; }
+
+  /* GALLERY */
+  .gallery { background: var(--paper); }
+  .gal-grid { columns: 3; column-gap: 1rem; }
+  .gal-grid img {
+    width: 100%; margin-bottom: 1rem; border-radius: 4px; display: block;
+    box-shadow: 0 4px 14px var(--shadow); transition: transform 0.35s, filter 0.35s;
+    filter: saturate(0.92);
+  }
+  .gal-grid img:hover { transform: scale(1.03); filter: saturate(1.1); }
+
+  /* BUDGET */
+  .budget-grid { display: grid; gap: 1rem; max-width: 760px; }
+  .budget-row { }
+  .budget-row .label { display: flex; justify-content: space-between; margin-bottom: 0.3rem; font-size: 0.95rem; }
+  .budget-row .label .cost { font-weight: 700; color: var(--red); }
+  .bar { height: 12px; background: rgba(26,14,12,0.08); border-radius: 6px; overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--red)); border-radius: 6px; transition: width 1.1s ease; }
+  .budget-total {
+    margin-top: 1.8rem; background: var(--red-deep); color: var(--cream); padding: 1.2rem 1.6rem;
+    border-radius: 4px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 1.2rem; font-weight: 700;
+  }
+  .budget-total .amount { font-family: 'Ma Shan Zheng', cursive; font-size: 1.8rem; color: var(--gold-light); }
+  .budget-note { margin-top: 0.8rem; font-size: 0.85rem; color: #6b5d55; font-style: italic; }
+
+  /* LOGISTICS */
+  .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.3rem; }
+  .log-card {
+    background: #fff; border-radius: 4px; padding: 1.5rem; box-shadow: 0 4px 16px var(--shadow);
+    border-top: 3px solid var(--gold); transition: transform 0.3s;
+  }
+  .log-card:hover { transform: translateY(-5px); }
+  .log-card h3 { color: var(--red); font-size: 1.1rem; margin-bottom: 0.7rem; }
+  .log-card p { font-size: 0.92rem; color: #3d322d; }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(160deg, #2A0B0C, #7E1419); color: var(--cream);
+    text-align: center; padding: 4rem 1.5rem 3rem; position: relative; z-index: 1;
+  }
+  footer .cn { font-family: 'Ma Shan Zheng', cursive; font-size: 3rem; color: var(--gold-light); margin-bottom: 0.5rem; }
+  footer .tag { font-size: 1rem; opacity: 0.85; letter-spacing: 0.08em; }
+
+  /* BACK TO TOP */
+  .top-btn {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 90;
+    background: var(--red); color: var(--cream); border: 2px solid var(--gold);
+    width: 48px; height: 48px; border-radius: 50%; font-size: 1.3rem; cursor: pointer;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .top-btn.show { opacity: 1; pointer-events: auto; }
+  .top-btn:hover { transform: translateY(-4px); }
+
+  /* HOTELS */
+  .hotels { background: var(--cream); }
+  .hotels-table { display: flex; flex-direction: column; gap: 0.8rem; }
+  .hotel-card {
+    background: #fff; border-radius: 4px; padding: 1.1rem 1.3rem; box-shadow: 0 3px 14px var(--shadow);
+    border-left: 4px solid var(--gold); display: grid;
+    grid-template-columns: 1.2fr 2fr auto auto; gap: 1rem; align-items: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .hotel-card:hover { transform: translateX(4px); box-shadow: 0 6px 20px var(--shadow); }
+  .hotel-card .h-city { font-weight: 700; font-size: 1.05rem; color: var(--red); }
+  .hotel-card .h-city .h-cn { font-family: 'Ma Shan Zheng', cursive; color: var(--gold); font-size: 1rem; margin-left: 0.3rem; }
+  .hotel-card .h-name { font-size: 0.9rem; color: #3d322d; }
+  .hotel-card .h-name .h-zone { display: block; font-size: 0.78rem; color: #8a7a70; margin-top: 0.15rem; }
+  .hotel-card .h-map {
+    display: inline-block; margin-top: 0.35rem; font-size: 0.78rem; color: var(--red);
+    text-decoration: none; font-weight: 600; border-bottom: 1px solid rgba(176,30,40,0.35);
+  }
+  .hotel-card .h-map:hover { border-bottom-color: var(--red); }
+  .hotel-card .h-dates { font-size: 0.82rem; color: #6b5d55; white-space: nowrap; text-align: right; }
+  .hotel-card .h-dates .h-nights { display: block; font-size: 0.72rem; color: #a89a90; }
+  .hotel-card .h-price { text-align: right; white-space: nowrap; }
+  .hotel-card .h-price .h-total { font-weight: 700; color: var(--ink); font-size: 1rem; }
+  .hotel-card .h-price .h-ppn { display: block; font-size: 0.72rem; color: var(--red); margin-top: 0.15rem; }
+  .hotels-summary {
+    margin-top: 1.5rem; background: var(--red-deep); color: var(--cream); border-radius: 4px;
+    padding: 1.2rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1rem; text-align: center;
+  }
+  .hotels-summary .hs-item .hs-num { font-family: 'Ma Shan Zheng', cursive; font-size: 1.9rem; color: var(--gold-light); line-height: 1; }
+  .hotels-summary .hs-item .hs-label { font-size: 0.8rem; opacity: 0.9; margin-top: 0.3rem; }
+  .hotels-note { margin-top: 0.9rem; font-size: 0.82rem; color: #6b5d55; font-style: italic; text-align: center; }
+  @media (max-width: 700px) {
+    .hotel-card { grid-template-columns: 1fr 1fr; gap: 0.5rem 0.8rem; }
+    .hotel-card .h-dates, .hotel-card .h-price { text-align: left; }
+  }
+
+  .sec-cream { background: var(--cream); }
+  .sec-paper { background: var(--paper); }
+
+  /* DAY BY DAY */
+  .daybyday { background: var(--paper); }
+  .dbd-city-block { margin-bottom: 2.5rem; }
+  .dbd-city-head {
+    display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold);
+  }
+  .dbd-city-head .name { font-size: 1.5rem; font-weight: 700; color: var(--red); }
+  .dbd-city-head .cn { font-family: 'Ma Shan Zheng', cursive; font-size: 1.4rem; color: var(--gold); }
+  .dbd-city-head .range { margin-left: auto; font-size: 0.85rem; color: #6b5d55; }
+  .dbd-day {
+    display: flex; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid rgba(201,154,59,0.2);
+  }
+  .dbd-day:last-child { border-bottom: none; }
+  .dbd-daynum {
+    flex-shrink: 0; width: 54px; text-align: center;
+  }
+  .dbd-daynum .d { font-family: 'Ma Shan Zheng', cursive; font-size: 1.5rem; color: var(--red); line-height: 1; }
+  .dbd-daynum .dm { font-size: 0.7rem; color: #8a7a70; margin-top: 0.15rem; }
+  .dbd-content { flex: 1; }
+  .dbd-content .title { font-weight: 700; font-size: 1rem; margin-bottom: 0.3rem; color: var(--ink); }
+  .dbd-content .desc { font-size: 0.92rem; color: #3d322d; }
+  .dbd-content .tip { font-size: 0.82rem; color: var(--red); margin-top: 0.3rem; font-style: italic; }
+  .dbd-move {
+    background: rgba(201,154,59,0.13); border-radius: 4px; padding: 0.5rem 0.9rem;
+    font-size: 0.85rem; color: var(--red-deep); font-weight: 600; margin: 0.5rem 0;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  /* CALENDAR */
+  .calendar { background: var(--paper); }
+  .cal-month-label {
+    font-family: 'Ma Shan Zheng', cursive; font-size: 1.6rem; color: var(--red);
+    text-align: center; margin-bottom: 1.2rem;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-head {
+    text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--red-deep);
+    padding: 0.5rem 0; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .cal-cell {
+    min-height: 92px; background: #fff; border-radius: 4px; padding: 0.4rem 0.45rem;
+    border: 1px solid rgba(201,154,59,0.2); position: relative; font-size: 0.72rem;
+    display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cal-cell:hover { transform: translateY(-3px); box-shadow: 0 6px 16px var(--shadow); z-index: 2; }
+  .cal-cell.empty { background: transparent; border: none; }
+  .cal-cell .date { font-weight: 700; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.2rem; }
+  .cal-cell .place { font-weight: 600; line-height: 1.25; }
+  /* city colour coding */
+  .cal-cell.c-pequin { border-top: 3px solid var(--red); }
+  .cal-cell.c-pequin .place { color: var(--red); }
+  .cal-cell.c-chengdu { border-top: 3px solid #C97B1E; }
+  .cal-cell.c-chengdu .place { color: #A9640F; }
+  .cal-cell.c-chongqing { border-top: 3px solid #8B5A2B; }
+  .cal-cell.c-chongqing .place { color: #6E4420; }
+  .cal-cell.c-zhang { border-top: 3px solid #3B7A57; }
+  .cal-cell.c-zhang .place { color: #2E6144; }
+  .cal-cell.c-shanghai { border-top: 3px solid var(--red-deep); }
+  .cal-cell.c-shanghai .place { color: var(--red-deep); }
+  .cal-cell .flight {
+    margin-top: auto; font-size: 0.62rem; background: var(--gold); color: var(--ink);
+    padding: 0.12rem 0.3rem; border-radius: 2px; font-weight: 700; line-height: 1.3;
+  }
+  .cal-cell .flight.home { background: var(--ink); color: var(--cream); }
+  .cal-legend { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; justify-content: center; margin-top: 1.8rem; font-size: 0.82rem; }
+  .cal-legend span { display: flex; align-items: center; gap: 0.4rem; }
+  .cal-legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  @media (max-width: 700px) {
+    .gal-grid { columns: 2; }
+    nav { gap: 1rem; }
+    .route-track { flex-direction: column; }
+    .cal-cell { min-height: 64px; font-size: 0.6rem; padding: 0.25rem; }
+    .cal-cell .date { font-size: 0.72rem; }
+    .cal-cell .flight { font-size: 0.5rem; }
+    .cal-head { font-size: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="pattern-bg"></div>
+
+<nav>
+  <a href="#ruta">La Ruta</a>
+  <a href="#calendari">Calendari</a>
+  <a href="#itinerari">Itinerari</a>
+  <a href="#diaadia">Dia a dia</a>
+  <a href="#hotels">Hotels</a>
+  <a href="#galeria">Galeria</a>
+  <a href="#pressupost">Pressupost</a>
+  <a href="#logistica">Logística</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-glyphs">中国</div>
+  <span class="lantern l1">🏮</span>
+  <span class="lantern l2">🏮</span>
+  <span class="lantern l3">🏮</span>
+  <div class="hero-content">
+    <div class="cn-title">中国之旅</div>
+    <h1>La nostra aventura xinesa</h1>
+    <div class="subtitle">18 dies · 5 ciutats · 4 viatgers</div>
+    <div class="dates">4 – 22 de setembre</div>
+    <a href="#ruta" class="cta">Descobreix la ruta ↓</a>
+  </div>
+</header>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
+<!-- RUTA -->
+<section class="route" id="ruta">
+  <div class="wrap">
+    <span class="section-tag reveal">路线</span>
+    <h2 class="section-title reveal">La Ruta</h2>
+    <div class="route-track">
+      <div class="stop modern reveal"><div class="num">一</div><div class="city">Pequín</div><div class="cn">北京</div><div class="days">4 dies</div></div>
+      <div class="stop reveal"><div class="num">二</div><div class="city">Chengdu</div><div class="cn">成都</div><div class="days">5 dies</div></div>
+      <div class="stop reveal"><div class="num">三</div><div class="city">Chongqing</div><div class="cn">重庆</div><div class="days">2 dies</div></div>
+      <div class="stop nature reveal"><div class="num">四</div><div class="city">Zhangjiajie</div><div class="cn">张家界</div><div class="days">3 dies</div></div>
+      <div class="stop modern reveal"><div class="num">五</div><div class="city">Shanghai</div><div class="cn">上海</div><div class="days">3 dies</div></div>
+    </div>
+    <div class="transport-note reveal">
+      ✈ 2 vols (Pequín→Chengdu · Zhangjiajie→Shanghai) &nbsp;·&nbsp; 🚄 2 trens bala (Chengdu→Chongqing→Zhangjiajie)
+    </div>
+  </div>
+</section>
+
+<!-- CALENDARI -->
+<section class="calendar" id="calendari">
+  <div class="wrap">
+    <span class="section-tag reveal">日历</span>
+    <h2 class="section-title reveal">Calendari dia a dia</h2>
+    <div class="cal-month-label reveal">Setembre 2026 · 九月</div>
+    <div class="cal-grid reveal">
+      <div class="cal-head">Dl</div><div class="cal-head">Dt</div><div class="cal-head">Dc</div><div class="cal-head">Dj</div><div class="cal-head">Dv</div><div class="cal-head">Ds</div><div class="cal-head">Dg</div>
+
+      <!-- Week 1: 1 Sept 2026 is TUESDAY, so Monday is empty -->
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell"><span class="date">1</span></div>
+      <div class="cal-cell"><span class="date">2</span></div>
+      <div class="cal-cell"><span class="date">3</span></div>
+      <div class="cal-cell"><span class="date">4</span><span class="flight">✈ BCN→Pequín 21:30</span></div>
+      <div class="cal-cell c-pequin"><span class="date">5</span><span class="place">Pequín</span></div>
+      <div class="cal-cell c-pequin"><span class="date">6</span><span class="place">Pequín</span></div>
+
+      <!-- Week 2: 7=Mon ... 13=Sun -->
+      <div class="cal-cell c-pequin"><span class="date">7</span><span class="place">Pequín</span></div>
+      <div class="cal-cell c-pequin"><span class="date">8</span><span class="place">Pequín</span></div>
+      <div class="cal-cell c-chengdu"><span class="date">9</span><span class="place">Chengdu</span><span class="flight">✈ Pequín→Chengdu</span></div>
+      <div class="cal-cell c-chengdu"><span class="date">10</span><span class="place">Chengdu</span></div>
+      <div class="cal-cell c-chengdu"><span class="date">11</span><span class="place">Chengdu</span></div>
+      <div class="cal-cell c-chengdu"><span class="date">12</span><span class="place">Chengdu</span></div>
+      <div class="cal-cell c-chengdu"><span class="date">13</span><span class="place">Chengdu</span></div>
+
+      <!-- Week 3: 14=Mon ... 20=Sun -->
+      <div class="cal-cell c-chongqing"><span class="date">14</span><span class="place">Chongqing</span><span class="flight">🚄 Chengdu→CQ</span></div>
+      <div class="cal-cell c-chongqing"><span class="date">15</span><span class="place">Chongqing</span></div>
+      <div class="cal-cell c-zhang"><span class="date">16</span><span class="place">Zhangjiajie</span><span class="flight">🚄 CQ→Zhangjiajie</span></div>
+      <div class="cal-cell c-zhang"><span class="date">17</span><span class="place">Zhangjiajie</span></div>
+      <div class="cal-cell c-zhang"><span class="date">18</span><span class="place">Zhangjiajie</span></div>
+      <div class="cal-cell c-shanghai"><span class="date">19</span><span class="place">Shanghai</span><span class="flight">✈ Zhang→Shanghai</span></div>
+      <div class="cal-cell c-shanghai"><span class="date">20</span><span class="place">Shanghai</span></div>
+
+      <!-- Week 4: 21=Mon ... 27=Sun -->
+      <div class="cal-cell c-shanghai"><span class="date">21</span><span class="place">Shanghai</span></div>
+      <div class="cal-cell c-shanghai"><span class="date">22</span><span class="place">Shanghai</span><span class="flight home">✈ Shanghai→BCN 00:40</span></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+    </div>
+    <div class="cal-legend reveal">
+      <span><i class="dot" style="background:var(--red)"></i>Pequín</span>
+      <span><i class="dot" style="background:#C97B1E"></i>Chengdu</span>
+      <span><i class="dot" style="background:#8B5A2B"></i>Chongqing</span>
+      <span><i class="dot" style="background:#3B7A57"></i>Zhangjiajie</span>
+      <span><i class="dot" style="background:var(--red-deep)"></i>Shanghai</span>
+      <span><i class="dot" style="background:var(--gold)"></i>Vol / Tren</span>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARI -->
+<section class="sec-cream" id="itinerari">
+  <div class="wrap">
+    <span class="section-tag reveal">行程</span>
+    <h2 class="section-title reveal">Itinerari</h2>
+    <div class="itin-grid">
+      <div class="itin-card reveal">
+        <div class="head"><span class="name">Pequín</span><span class="cn">北京</span></div>
+        <div class="body">
+          <div class="days-label">DIES 5–8 · Base 1</div>
+          <ul>
+            <li>Ciutat Prohibida i plaça de Tiananmen</li>
+            <li>Gran Muralla a Jinshanling (tram autèntic)</li>
+            <li>Barris hutong en bicicleta</li>
+            <li>Temple del Cel</li>
+          </ul>
+        </div>
+      </div>
+      <div class="itin-card reveal">
+        <div class="head"><span class="name">Chengdu</span><span class="cn">成都</span></div>
+        <div class="body">
+          <div class="days-label">DIES 9–13 · Base 2</div>
+          <ul>
+            <li>Base d'investigació del panda gegant</li>
+            <li>Cases de te i vida de barri</li>
+            <li>Kuanzhai Xiangzi</li>
+            <li>Cuina sichuan · excursió a Leshan</li>
+          </ul>
+        </div>
+      </div>
+      <div class="itin-card reveal">
+        <div class="head"><span class="name">Chongqing</span><span class="cn">重庆</span></div>
+        <div class="body">
+          <div class="days-label">DIES 14–15 · Base 3</div>
+          <ul>
+            <li>Skyline cyberpunk i Hongya Cave</li>
+            <li>Ciqikou, poble antic</li>
+            <li>Monorraïl que travessa edificis</li>
+            <li>Creuer nocturn pel Yangtsé</li>
+          </ul>
+        </div>
+      </div>
+      <div class="itin-card reveal">
+        <div class="head"><span class="name">Zhangjiajie</span><span class="cn">张家界</span></div>
+        <div class="body">
+          <div class="days-label">DIES 16–18 · Base 4</div>
+          <ul>
+            <li>Parc Forestal Nacional (pilars d'Avatar)</li>
+            <li>Muntanya Tianmen i telefèric</li>
+            <li>Porta del Cel</li>
+            <li>Pont de vidre del Gran Canyó</li>
+          </ul>
+        </div>
+      </div>
+      <div class="itin-card reveal">
+        <div class="head"><span class="name">Shanghai</span><span class="cn">上海</span></div>
+        <div class="body">
+          <div class="days-label">DIES 19–21 · Base 5</div>
+          <ul>
+            <li>El Bund i skyline nocturn</li>
+            <li>Pudong i gratacels</li>
+            <li>Barri Francès</li>
+            <li>Mercats i vida local</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--gold);">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
+<!-- DIA A DIA -->
+<section class="daybyday" id="diaadia">
+  <div class="wrap">
+    <span class="section-tag reveal">每日</span>
+    <h2 class="section-title reveal">Dia a dia</h2>
+
+    <!-- PEQUÍN -->
+    <div class="dbd-city-block reveal">
+      <div class="dbd-city-head"><span class="name">Pequín</span><span class="cn">北京</span><span class="range">dv 4 – dt 8 set</span></div>
+      <div class="dbd-move">✈ Div 4, 21:25 — Vol BCN → Pequín (arribada dis 5 al matí)</div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">5</div><div class="dm">dis</div></div><div class="dbd-content"><div class="title">Arribada + aterratge suau</div><div class="desc">Arribeu del vol nocturn amb jet lag (+6h). Check-in i tarda tranquil·la: passeig pels hutongs o la zona de Qianmen. Res exigent.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">6</div><div class="dm">diu</div></div><div class="dbd-content"><div class="title">Cor imperial</div><div class="desc">Plaça de Tiananmen + Ciutat Prohibida (mig matí llarg, entreu per Meridian Gate i sortiu per la Porta Nord). A la tarda, Temple del Cel.</div><div class="tip">Reserveu entrada de la Ciutat Prohibida amb antelació (s'esgota) i porteu el passaport.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">7</div><div class="dm">dil</div></div><div class="dbd-content"><div class="title">La Muralla èpica — Jinshanling</div><div class="desc">Dia sencer a Jinshanling (~2,5-3h de trajecte cada sentit + trekking entre torres). El tram més autèntic i sense multituds.</div><div class="tip">Dilluns la Ciutat Prohibida tanca, per això la Muralla va bé avui.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">8</div><div class="dm">dt</div></div><div class="dbd-content"><div class="title">Marge + últim dia</div><div class="desc">Dia coixí: Palau d'Estiu, Temple dels Lames, o mercat nocturn de Wangfujing. El que quedi pendent, amb calma.</div></div></div>
+    </div>
+
+    <!-- CHENGDU -->
+    <div class="dbd-city-block reveal">
+      <div class="dbd-city-head"><span class="name">Chengdu</span><span class="cn">成都</span><span class="range">dc 9 – dis 13 set</span></div>
+      <div class="dbd-move">✈ Dc 9, 15:25 — Vol JD5559 Pequín Daxing (PKX) → Chengdu Tianfu (T2), arribada 18:15</div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">9</div><div class="dm">dc</div></div><div class="dbd-content"><div class="title">Arribada</div><div class="desc">Arribeu al vespre. Check-in i primer sopar sichuan. Descans.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">10</div><div class="dm">dj</div></div><div class="dbd-content"><div class="title">Pandes</div><div class="desc">Base d'investigació del panda gegant ben d'hora (sortir del hotel ~7h per ser a l'obertura a les 7:30, quan estan actius). A la tarda: Monestir Wenshu i People's Park.</div><div class="tip">Reserva online obligatòria + passaport.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">11</div><div class="dm">dv</div></div><div class="dbd-content"><div class="title">Excursió: Gran Buda de Leshan</div><div class="desc">Dia d'excursió al Buda gegant tallat a la roca (~1h en tren), el Buda de pedra més gran del món. Opcional combinar amb Mont Emei.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">12</div><div class="dm">dis</div></div><div class="dbd-content"><div class="title">Vida de Chengdu</div><div class="desc">Dia local: Kuanzhai Xiangzi (callejons antics), cases de te, Jinli Old Street, i un bon hotpot sichuan. Opcional òpera sichuan amb canvi de màscares.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">13</div><div class="dm">diu</div></div><div class="dbd-content"><div class="title">Marge</div><div class="desc">Dia coixí per a allò pendent o ritme lent (Chengdu convida a no córrer).</div></div></div>
+    </div>
+
+    <!-- CHONGQING -->
+    <div class="dbd-city-block reveal">
+      <div class="dbd-city-head"><span class="name">Chongqing</span><span class="cn">重庆</span><span class="range">dl 14 – dt 15 set</span></div>
+      <div class="dbd-move">🚄 Dl 14 — Tren bala Chengdu → Chongqing (~1h15)</div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">14</div><div class="dm">dl</div></div><div class="dbd-content"><div class="title">Ciutat cyberpunk</div><div class="desc">Arribada i check-in a Jiefangbei. A la tarda-nit: Hongya Cave (millor de nit, il·luminada), el monorraïl que travessa edificis, i vistes del skyline.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">15</div><div class="dm">dt</div></div><div class="dbd-content"><div class="title">Ciqikou + Yangtsé</div><div class="desc">Poble antic de Ciqikou al matí. A la nit, creuer pel riu Yangtsé per veure la ciutat vertical il·luminada. La postal de Chongqing.</div></div></div>
+    </div>
+
+    <!-- ZHANGJIAJIE -->
+    <div class="dbd-city-block reveal">
+      <div class="dbd-city-head"><span class="name">Zhangjiajie</span><span class="cn">张家界</span><span class="range">dc 16 – dis 19 set</span></div>
+      <div class="dbd-move">🚄 Dc 16 — Tren bala Chongqing → Zhangjiajie (~2h) + DiDi a Wulingyuan (~40 min)</div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">16</div><div class="dm">dc</div></div><div class="dbd-content"><div class="title">Arribada a Wulingyuan</div><div class="desc">Trasllat de l'estació a Wulingyuan (l'hotel és a la porta est del parc). Tarda per instal·lar-vos i comprar entrades del parc.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">17</div><div class="dm">dj</div></div><div class="dbd-content"><div class="title">Parc Nacional — pilars d'Avatar</div><div class="desc">Dia sencer al parc: Bailong Elevator, Yuanjiajie, Muntanya Aleluya (la d'Avatar) i Tianzi. Entreu ben d'hora andant des de l'hotel (15 min).</div><div class="tip">Truc: comenceu per una altra zona, que els grups corren directes a la Muntanya Aleluya. La veureu més buida després.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">18</div><div class="dm">dv</div></div><div class="dbd-content"><div class="title">Tianmen o pont de vidre</div><div class="desc">Dia sencer per a la Muntanya Tianmen (telefèric, Porta del Cel, els 999 esglaons) o el pont de vidre del Gran Canyó, que el teniu a mitja hora. També podeu tornar al parc si us va quedar pendent.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">19</div><div class="dm">dis</div></div><div class="dbd-content"><div class="title">Matí lliure + trasllat a l'aeroport</div><div class="desc">El vol surt a les 13:00 des de Zhangjiajie Hehua (T2). Compteu el trasllat des de Wulingyuan (~40 min) i arribar amb temps.</div></div></div>
+    </div>
+
+    <!-- SHANGHAI -->
+    <div class="dbd-city-block reveal">
+      <div class="dbd-city-head"><span class="name">Shanghai</span><span class="cn">上海</span><span class="range">dis 19 – dl 21 set</span></div>
+      <div class="dbd-move">✈ Dis 19, 13:00 — Vol FM7226 Zhangjiajie (T2) → Shanghai Pudong (T1), arribada 14:55</div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">19</div><div class="dm">dis</div></div><div class="dbd-content"><div class="title">Arribada + el Bund de nit</div><div class="desc">Arribeu a les 14:55 a Pudong. Trasllat al centre, check-in i reserveu la tarda-nit per al Bund: el skyline de Pudong il·luminat des del passeig. El moment estrella.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">20</div><div class="dm">diu</div></div><div class="dbd-content"><div class="title">Pudong i les altures</div><div class="desc">Creueu a Pudong. Pugeu a un mirador (Shanghai Tower, la més alta, o la Perla d'Orient). Modernitat en estat pur.</div></div></div>
+      <div class="dbd-day"><div class="dbd-daynum"><div class="d">21</div><div class="dm">dl</div></div><div class="dbd-content"><div class="title">Shanghai amb calma + sortida</div><div class="desc">Dia més local: Barri Francès (cafès, arbres, arquitectura colonial), jardins Yuyuan, mercats. Check-out i última nit fins a anar a l'aeroport.</div><div class="tip">El vol surt el dt 22 a les 00:40, o sea que sortiu cap a l'aeroport la nit del 21. Considereu late check-out per descansar abans.</div></div></div>
+      <div class="dbd-move" style="background:var(--ink);color:var(--cream);">✈ Dt 22, 00:40 — Vol Shanghai → Barcelona</div>
+    </div>
+
+  </div>
+</section>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
+<!-- HOTELS -->
+<section class="hotels" id="hotels">
+  <div class="wrap">
+    <span class="section-tag reveal">酒店</span>
+    <h2 class="section-title reveal">Hotels reservats</h2>
+    <div class="hotels-table">
+      <div class="hotel-card reveal">
+        <div class="h-city">Pequín<span class="h-cn">北京</span></div>
+        <div class="h-name">Happy Dragon Imperial Garden Courtyard<span class="h-zone">Forbidden City · anglès fluid</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=39.921094,116.423294&query_place_id=ChIJGVtcRCqt8TURFWZaSKvXMps" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
+        <div class="h-dates">5–9 set<span class="h-nights">4 nits</span></div>
+        <div class="h-price"><span class="h-total">876€</span><span class="h-ppn">55€/pers·nit</span></div>
+      </div>
+      <div class="hotel-card reveal">
+        <div class="h-city">Chengdu<span class="h-cn">成都</span></div>
+        <div class="h-name">Echeng Hotel Chunxi Road Taikoo Li<span class="h-zone">Chunxi Rd / Taikoo Li</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=30.65878,104.074763&query_place_id=ChIJY9tl7zjF7zYRYZ3Yl0Evvns" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
+        <div class="h-dates">9–14 set<span class="h-nights">5 nits</span></div>
+        <div class="h-price"><span class="h-total">445€</span><span class="h-ppn">22€/pers·nit</span></div>
+      </div>
+      <div class="hotel-card reveal">
+        <div class="h-city">Chongqing<span class="h-cn">重庆</span></div>
+        <div class="h-name">Tianlai Yunyun River View (Raffles City)<span class="h-zone">Jiefangbei / Yuzhong</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=29.557671,106.581905&query_place_id=ChIJ-Ua5WIc0kzYR1SfNNXM9NUg" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
+        <div class="h-dates">14–16 set<span class="h-nights">2 nits</span></div>
+        <div class="h-price"><span class="h-total">154€</span><span class="h-ppn">19€/pers·nit</span></div>
+      </div>
+      <div class="hotel-card reveal">
+        <div class="h-city">Zhangjiajie<span class="h-cn">张家界</span></div>
+        <div class="h-name">All Seasons Lodge<span class="h-zone">Wulingyuan · porta est del parc</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=One+Year+Four+Season+Theme+Inn+Wulingyuan+Zhangjiajie" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
+        <div class="h-dates">16–19 set<span class="h-nights">3 nits</span></div>
+        <div class="h-price"><span class="h-total">124€</span><span class="h-ppn">10€/pers·nit</span></div>
+      </div>
+      <div class="hotel-card reveal">
+        <div class="h-city">Shanghai<span class="h-cn">上海</span></div>
+        <div class="h-name">Atour Hotel Nanjing East Road<span class="h-zone">Nanjing East Road</span><a class="h-map" href="https://www.google.com/maps/search/?api=1&query=31.235105,121.488254&query_place_id=ChIJIelWHFlwsjURVImuWhdnv84" target="_blank" rel="noopener">📍 Veure al mapa</a></div>
+        <div class="h-dates">19–21 set<span class="h-nights">2 nits</span></div>
+        <div class="h-price"><span class="h-total">274€</span><span class="h-ppn">34€/pers·nit</span></div>
+      </div>
+    </div>
+    <div class="hotels-summary reveal">
+      <div class="hs-item"><div class="hs-num">1.873€</div><div class="hs-label">Total grup (4 pers · 16 nits)</div></div>
+      <div class="hs-item"><div class="hs-num">468€</div><div class="hs-label">Per persona</div></div>
+      <div class="hs-item"><div class="hs-num">29€</div><div class="hs-label">Mitjana per persona i nit</div></div>
+    </div>
+    <p class="hotels-note reveal">Tots reservats via Booking amb cancel·lació gratuïta · preus reals confirmats</p>
+  </div>
+</section>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
+<!-- GALERIA -->
+<section class="gallery" id="galeria">
+  <div class="wrap">
+    <span class="section-tag reveal">画廊</span>
+    <h2 class="section-title reveal">Galeria</h2>
+    <div class="gal-grid reveal">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/600px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg" alt="Gran Muralla a Jinshanling">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Forbidden_City_Beijing_Shenwumen_Gate.JPG/600px-Forbidden_City_Beijing_Shenwumen_Gate.JPG" alt="Ciutat Prohibida Pequín">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/600px-Grosser_Panda.JPG" alt="Panda gegant Chengdu">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Zhangjiajie_national_park.jpg/600px-Zhangjiajie_national_park.jpg" alt="Zhangjiajie pilars de roca">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Lujiazui_2016.jpg/600px-Lujiazui_2016.jpg" alt="Skyline Shanghai Pudong nocturn">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Chongqing_Nightscape.jpg/600px-Chongqing_Nightscape.jpg" alt="Chongqing skyline nocturn">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Tianmen_Mountain_Cable_Car.jpg/600px-Tianmen_Mountain_Cable_Car.jpg" alt="Muntanya Tianmen">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Temple_of_Heaven%2C_Beijing.jpg/600px-Temple_of_Heaven%2C_Beijing.jpg" alt="Temple del Cel Pequín">
+      <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/The_Bund%2C_Shanghai_%28January_2020%29.jpg/600px-The_Bund%2C_Shanghai_%28January_2020%29.jpg" alt="El Bund Shanghai">
+    </div>
+  </div>
+</section>
+
+<!-- PRESSUPOST -->
+<section class="sec-cream" id="pressupost">
+  <div class="wrap">
+    <span class="section-tag reveal">预算</span>
+    <h2 class="section-title reveal">Pressupost per persona</h2>
+    <div class="budget-grid reveal">
+      <div class="budget-row"><div class="label"><span>Vols internacionals (ja comprats)</span><span class="cost">1.425€</span></div><div class="bar"><span data-w="100"></span></div></div>
+      <div class="budget-row"><div class="label"><span>2 vols interns (preu real)</span><span class="cost">324€</span></div><div class="bar"><span data-w="23"></span></div></div>
+      <div class="budget-row"><div class="label"><span>2 trens bala</span><span class="cost">~60€</span></div><div class="bar"><span data-w="4"></span></div></div>
+      <div class="budget-row"><div class="label"><span>Allotjament (16 nits · preu real)</span><span class="cost">468€</span></div><div class="bar"><span data-w="31"></span></div></div>
+      <div class="budget-row"><div class="label"><span>Menjar</span><span class="cost">~450€</span></div><div class="bar"><span data-w="32"></span></div></div>
+      <div class="budget-row"><div class="label"><span>Transport urbà</span><span class="cost">~90€</span></div><div class="bar"><span data-w="6"></span></div></div>
+      <div class="budget-row"><div class="label"><span>Entrades i excursions</span><span class="cost">~250€</span></div><div class="bar"><span data-w="18"></span></div></div>
+      <div class="budget-row"><div class="label"><span>Assegurança</span><span class="cost">~90€</span></div><div class="bar"><span data-w="6"></span></div></div>
+    </div>
+    <div class="budget-total reveal"><span>TOTAL APROXIMAT</span><span class="amount">~3.160€</span></div>
+    <p class="budget-note reveal">Vols internacionals: 1.425€/persona. Vols interns: Pequín→Chengdu (570€ els 4) i Zhangjiajie→Shanghai (726€ els 4). Amb marge per imprevistos i capricis: comptar ~3.300–3.500€ per estar tranquils.</p>
+  </div>
+</section>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
+<!-- LOGISTICA -->
+<section class="sec-paper" id="logistica">
+  <div class="wrap">
+    <span class="section-tag reveal">须知</span>
+    <h2 class="section-title reveal">Logística essencial</h2>
+    <div class="log-grid">
+      <div class="log-card reveal"><h3>🛂 Sense visat</h3><p>Exempció per a espanyols fins a 30 dies (vigent fins 31/12/2026). No cal tràmit d'ambaixada.</p></div>
+      <div class="log-card reveal" style="border-top-color:var(--red);background:#FFF8F0;"><h3>📝 E-Arrival Card (OBLIGATÒRIA)</h3><p>Formulari online gratuït, cal omplir-lo 48-72h abans d'arribar. Web oficial: <b>s.nia.gov.cn</b> (es pot posar en espanyol dalt a la dreta). Compte amb webs intermediàries que cobren! Tingueu a mà: passaport, vol d'arribada (Air China 4 set), i adreça del 1r hotel (Happy Dragon, Pequín). Guardeu el codi QR que us donarà.</p></div>
+      <div class="log-card reveal"><h3>📶 eSIM amb VPN (Holafly)</h3><p>eSIM amb dades il·limitades i VPN integrada per saltar el firewall (Google, WhatsApp, Instagram). ~45-50€ per persona per 18 dies. L'iPhone 17 la instal·la sol. Millor una per persona.</p></div>
+      <div class="log-card reveal"><h3>🔒 Sobre la VPN</h3><p>Amb Holafly no cal VPN a part: ja va integrada. NO n'instal·lis una altra a sobre (es poden interferir). Tingues Google Maps offline descarregat com a reserva.</p></div>
+      <div class="log-card reveal"><h3>📱 Pagaments mòbil</h3><p>Configura Alipay amb el passaport ABANS de sortir (la verificació pot trigar 24h). Es paga gairebé tot amb el mòbil. Evita la "TourCard" d'Alipay: té un 5% de comissió amagat.</p></div>
+      <div class="log-card reveal"><h3>💳 Targetes: Trade Republic + N26</h3><p>Porta les dues. Trade Republic com a principal (millor per treure efectiu, 1% cashback); N26 de reserva per si Alipay no accepta bé una. Alipay cobra 3% en compres de +200 iuans (~26€); per sota, gratis.</p></div>
+      <div class="log-card reveal"><h3>🎫 Trens amb 15 dies</h3><p>Els bitllets de tren bala només es venen amb 15 dies d'antelació. Apunta't les dates per comprar-los el primer dia.</p></div>
+      <div class="log-card reveal"><h3>🛏 Hotels flexibles</h3><p>Reserva sempre amb tarifa reemborsable. Així pots cancel·lar si canvien els plans, sense pagar res per avançat.</p></div>
+      <div class="log-card reveal"><h3>💵 Efectiu</h3><p>Porta uns 200-300 iuans en efectiu per persona per al dipòsit del check-in d'alguns hotels, que de vegades el volen en efectiu. La resta, tot amb Alipay.</p></div>
+      <div class="log-card reveal" style="border-top-color:var(--red);background:#FFF8F0;"><h3>🏥 Assegurança (PENDENT)</h3><p>Dues opcions: <b>IATI</b> (millor assistència a la Xina, no avances diners, especialistes a l'app) o <b>Heymondo</b> (millor preu amb 15% de descompte per a grups de 4). ~70-90€ per persona pels 18 dies. IMPORTANT: afegir cobertura de cancel·lació i contractar-la aviat. Cap assegurança cobreix zones en conflicte, així que la cancel·lació és la protecció real.</p></div>
+      <div class="log-card reveal"><h3>🧳 Equipatge</h3><p>Pla: 2 maletes facturades de 20kg per als 4 (compartides) + 4 de mà. COMPRA la maleta AL reservar el vol (Trip.com), no a l'aeroport (~60€ allà). Compte: cabina limitada a ~5kg als vols xinesos, i la pesen. <b>Mida màxima (la del tren bala, la més restrictiva): 130 cm sumant les 3 dimensions — una maleta de 24" (~65×40×25 cm). Al tren rarament la mesuren; als vols sí que controlen.</b></p></div>
+      <div class="log-card reveal"><h3>🔌 Endolls</h3><p>La Xina fa servir endolls tipus A/I. Porta un adaptador universal amb ports USB.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="cn">再见</div>
+  <div class="tag">La Xina ens espera · Setembre</div>
+</footer>
+
+<button class="top-btn" id="topBtn" aria-label="Tornar amunt">↑</button>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // animate budget bars when revealed
+        e.target.querySelectorAll && e.target.querySelectorAll('.bar span').forEach(b => {
+          b.style.width = b.dataset.w + '%';
+        });
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Also handle budget bars inside the grid (grid itself is .reveal)
+  const budgetObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.bar span').forEach(b => { b.style.width = b.dataset.w + '%'; });
+        budgetObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  const bg = document.querySelector('.budget-grid');
+  if (bg) budgetObserver.observe(bg);
+
+  // Back to top
+  const topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) topBtn.classList.add('show');
+    else topBtn.classList.remove('show');
+  });
+  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
