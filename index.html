@@ -398,6 +398,115 @@
     .cal-cell .flight { font-size: 0.5rem; }
     .cal-head { font-size: 0.6rem; }
   }
+
+  /* IDEES I CURIOSITATS */
+  .idees { background: var(--cream); }
+  .idees-intro { max-width: 720px; font-size: 0.95rem; color: #3d322d; margin-bottom: 1.8rem; }
+  .idea-form {
+    background: #fff; border-radius: 4px; padding: 1.5rem; margin-bottom: 2.5rem;
+    box-shadow: 0 4px 16px var(--shadow); border-top: 3px solid var(--red);
+    display: grid; gap: 0.9rem;
+  }
+  .idea-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.9rem; }
+  .idea-field label {
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #8a7a70; margin-bottom: 0.35rem;
+  }
+  .idea-field input, .idea-field select, .idea-field textarea {
+    width: 100%; font-family: inherit; font-size: 0.92rem; color: var(--ink);
+    background: var(--paper); border: 1px solid #e6d9c6; border-radius: 3px;
+    padding: 0.6rem 0.7rem; line-height: 1.5;
+  }
+  .idea-field textarea { resize: vertical; min-height: 78px; }
+  .idea-field input:focus, .idea-field select:focus, .idea-field textarea:focus {
+    outline: 2px solid var(--gold); outline-offset: 1px;
+  }
+  .idea-field .hint { display: block; margin-top: 0.35rem; font-size: 0.78rem; color: #8a7a70; font-style: italic; }
+  .idea-field input[type=file] { padding: 0.45rem; background: #fff; font-size: 0.85rem; }
+  .idea-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .idea-actions button {
+    background: var(--red); color: var(--cream); border: none; border-radius: 2px;
+    padding: 0.75rem 1.9rem; font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.04em; cursor: pointer; transition: background 0.25s;
+  }
+  .idea-actions button:hover { background: var(--red-deep); }
+  .idea-actions button:disabled { opacity: 0.6; cursor: progress; }
+  .idea-msg { font-size: 0.88rem; font-weight: 600; }
+  .idea-msg.ok { color: #4a7c3f; }
+  .idea-msg.err { color: var(--red); }
+  .idea-warn {
+    background: #FFF8F0; border-left: 3px solid var(--gold); border-radius: 3px;
+    padding: 0.7rem 0.9rem; font-size: 0.85rem; color: #6b5d55;
+  }
+
+  .idea-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.6rem; }
+  .idea-chip {
+    background: transparent; border: 1px solid rgba(176, 30, 40, 0.3); color: var(--red);
+    border-radius: 999px; padding: 0.35rem 0.95rem; font-family: inherit; font-size: 0.82rem;
+    font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  .idea-chip:hover { background: rgba(176, 30, 40, 0.08); }
+  .idea-chip.on { background: var(--red); color: var(--cream); border-color: var(--red); }
+
+  .idea-wall {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(270px, 100%), 1fr));
+    gap: 1.2rem; align-items: start;
+  }
+  .idea-card {
+    background: #fff; border-radius: 4px; padding: 1.15rem 1.3rem; border-left: 4px solid var(--gold);
+    box-shadow: 0 4px 16px var(--shadow); display: flex; flex-direction: column; gap: 0.55rem;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .idea-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px var(--shadow); }
+  .idea-card .ic-top { display: flex; align-items: center; gap: 0.5rem; }
+  .idea-card .ic-cat { font-size: 0.75rem; font-weight: 700; color: var(--red); letter-spacing: 0.03em; }
+  .idea-card .ic-city {
+    margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #8a7a70;
+    background: var(--paper); border-radius: 999px; padding: 0.15rem 0.6rem; white-space: nowrap;
+  }
+  .idea-card h3 { font-size: 1.05rem; color: var(--ink); }
+  .idea-card p { font-size: 0.88rem; color: #3d322d; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .idea-card .ic-link {
+    font-size: 0.8rem; font-weight: 600; color: var(--red); text-decoration: none;
+    border-bottom: 1px solid rgba(176, 30, 40, 0.35); align-self: flex-start; overflow-wrap: anywhere;
+  }
+  .idea-card .ic-link:hover { border-bottom-color: var(--red); }
+  .ic-shot {
+    margin: 0.2rem 0; border: 1px solid #eadfcd; border-radius: 3px; background: var(--paper);
+    min-height: 54px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: #8a7a70; overflow: hidden; padding: 0;
+  }
+  .ic-shot img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .idea-card .ic-foot {
+    display: flex; align-items: center; gap: 0.7rem; margin-top: auto; padding-top: 0.6rem;
+    border-top: 1px dashed #eadfcd; font-size: 0.76rem; color: #8a7a70;
+  }
+  .idea-card .ic-who { overflow-wrap: anywhere; }
+  .ic-btn {
+    background: transparent; border: none; font-family: inherit; font-size: 0.78rem;
+    color: #8a7a70; cursor: pointer; padding: 0.1rem 0.2rem;
+  }
+  .ic-btn:hover { color: var(--red); }
+  .ic-btn.on { color: var(--red); font-weight: 700; }
+  .ic-btn.ic-del { margin-left: auto; }
+  .idea-state { margin-top: 1.3rem; font-size: 0.85rem; color: #6b5d55; font-style: italic; }
+  .idea-state.err { color: var(--red); font-style: normal; font-weight: 600; }
+
+  /* Visor de captures */
+  .idea-visor {
+    position: fixed; inset: 0; z-index: 200; background: rgba(26, 14, 12, 0.93);
+    display: flex; align-items: center; justify-content: center; padding: 1.5rem; cursor: zoom-out;
+  }
+  .idea-visor img { max-width: 100%; max-height: 100%; border-radius: 3px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+  .idea-visor .tanca {
+    position: absolute; top: 1rem; right: 1.2rem; background: transparent; border: none;
+    color: var(--cream); font-size: 2rem; cursor: pointer; line-height: 1;
+  }
+
+  @media (max-width: 700px) {
+    .idea-row { grid-template-columns: 1fr; }
+    .idea-form { padding: 1.2rem; }
+  }
 </style>
 </head>
 <body>
@@ -408,6 +517,7 @@
   <a href="#calendari">Calendari</a>
   <a href="#itinerari">Itinerari</a>
   <a href="#diaadia">Dia a dia</a>
+  <a href="#idees">Idees</a>
   <a href="#privat">🔒 Privat</a>
   <a href="#galeria">Galeria</a>
   <a href="#logistica">Logística</a>
@@ -642,6 +752,85 @@
   <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
 </svg>
 
+<!-- IDEES -->
+<section class="idees" id="idees">
+  <div class="wrap">
+    <span class="section-tag reveal">点子</span>
+    <h2 class="section-title reveal">Idees i curiositats</h2>
+    <p class="idees-intro reveal">
+      El calaix de sastre del viatge: coses per veure, menjar, comprar o simplement no oblidar.
+      Apunta-ho aquí i ho veurem tots — des d'on comprar el te fins a aquella cosa rara que t'han explicat.
+      No cal contrasenya: escriu i envia. Si ho tens en una captura de pantalla, adjunta-la i ja està.
+    </p>
+
+    <form class="idea-form reveal" id="ideaForm" autocomplete="off">
+      <div class="idea-warn" id="ideaLocalWarn" hidden>
+        ⚙️ Encara no s'ha connectat la llista compartida: el que apuntis ara es queda <b>només en aquest
+        dispositiu</b> i no ho veurà la resta.
+      </div>
+      <div class="idea-row">
+        <div class="idea-field">
+          <label for="ideaNom">Qui ho apunta</label>
+          <input type="text" id="ideaNom" name="nom" maxlength="40" placeholder="El teu nom" required>
+        </div>
+        <div class="idea-field">
+          <label for="ideaCiutat">On</label>
+          <select id="ideaCiutat" name="ciutat">
+            <option value="General">Tot el viatge</option>
+            <option value="Pequín">Pequín 北京</option>
+            <option value="Chengdu">Chengdu 成都</option>
+            <option value="Chongqing">Chongqing 重庆</option>
+            <option value="Zhangjiajie">Zhangjiajie 张家界</option>
+            <option value="Shanghai">Shanghai 上海</option>
+          </select>
+        </div>
+        <div class="idea-field">
+          <label for="ideaCat">Què és</label>
+          <select id="ideaCat" name="cat">
+            <option value="visita">🏯 Lloc per veure</option>
+            <option value="menjar">🍜 Menjar o beure</option>
+            <option value="compres">🛍 Compres</option>
+            <option value="curiositat">💡 Curiositat</option>
+            <option value="avis">⚠️ A tenir en compte</option>
+            <option value="altres">✦ Altres</option>
+          </select>
+        </div>
+      </div>
+      <div class="idea-field">
+        <label for="ideaTitol">La idea</label>
+        <input type="text" id="ideaTitol" name="titol" maxlength="120" placeholder="Ex.: Comprar te en una casa de te tradicional" required>
+      </div>
+      <div class="idea-field">
+        <label for="ideaNota">Detalls (opcional)</label>
+        <textarea id="ideaNota" name="nota" maxlength="600" placeholder="El barri, el nom del lloc, qui t'ho ha dit, per què val la pena…"></textarea>
+      </div>
+      <div class="idea-row">
+        <div class="idea-field">
+          <label for="ideaEnllac">Enllaç (opcional)</label>
+          <input type="url" id="ideaEnllac" name="enllac" maxlength="300" placeholder="https://…">
+        </div>
+        <div class="idea-field">
+          <label for="ideaFoto">Captura o foto (opcional)</label>
+          <input type="file" id="ideaFoto" name="foto" accept="image/*">
+          <span class="hint">Es redueix al mòbil abans d'enviar-la. Truc: a l'iPhone pots copiar el text de dins la captura i enganxar-lo als detalls.</span>
+        </div>
+      </div>
+      <div class="idea-actions">
+        <button type="submit" id="ideaBtn">Apuntar-ho</button>
+        <span class="idea-msg" id="ideaMsg" role="status"></span>
+      </div>
+    </form>
+
+    <div class="idea-filters reveal" id="ideaFilters" hidden></div>
+    <div class="idea-wall" id="ideaWall"></div>
+    <p class="idea-state" id="ideaState">Carregant les idees…</p>
+  </div>
+</section>
+
+<svg class="wall-divider" viewBox="0 0 1200 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M0,48 L0,24 L40,24 L40,12 L80,12 L80,24 L140,24 L140,10 L180,10 L180,24 L240,24 L240,14 L280,14 L280,24 L340,24 L340,8 L380,8 L380,24 L440,24 L440,14 L480,14 L480,24 L540,24 L540,10 L580,10 L580,24 L640,24 L640,12 L680,12 L680,24 L740,24 L740,9 L780,9 L780,24 L840,24 L840,14 L880,14 L880,24 L940,24 L940,10 L980,10 L980,24 L1040,24 L1040,13 L1080,13 L1080,24 L1140,24 L1140,11 L1180,11 L1180,24 L1200,24 L1200,48 Z"/>
+</svg>
+
 <!-- HOTELS -->
 <section class="hotels" id="privat">
   <div class="wrap">
@@ -858,6 +1047,461 @@
       if (nav) nav.textContent = '🔒 Privat';
     });
   }
+
+
+  /* ── IDEES I CURIOSITATS ────────────────────────────────────────────────
+     Llista compartida damunt Firebase Realtime Database, per API REST i sense
+     SDK (la pàgina segueix sense dependències). Enganxa aquí la URL de la base
+     de dades; mentre estigui buida, la secció funciona en local (només en
+     aquest navegador) i ho avisa. Instruccions al README.
+
+     Les captures es redueixen al navegador i es guarden en un node a part
+     (/imatges), no dins de la llista: així obrir la pàgina només baixa el text
+     i les imatges arriben una a una quan la targeta entra en pantalla.        */
+  const IDEES_DB = 'https://laxina-42a93-default-rtdb.europe-west1.firebasedatabase.app';  // p. ex. 'https://xina-idees-default-rtdb.europe-west1.firebasedatabase.app'
+
+  (function idees() {
+    const form = document.getElementById('ideaForm');
+    const wall = document.getElementById('ideaWall');
+    if (!form || !wall) return;
+
+    const btn = document.getElementById('ideaBtn');
+    const msg = document.getElementById('ideaMsg');
+    const estat = document.getElementById('ideaState');
+    const filtres = document.getElementById('ideaFilters');
+    const inputNom = document.getElementById('ideaNom');
+    const inputFoto = document.getElementById('ideaFoto');
+
+    const CATS = {
+      visita:     '🏯 Lloc per veure',
+      menjar:     '🍜 Menjar o beure',
+      compres:    '🛍 Compres',
+      curiositat: '💡 Curiositat',
+      avis:       '⚠️ A tenir en compte',
+      altres:     '✦ Altres'
+    };
+    const CIUTATS = ['General', 'Pequín', 'Chengdu', 'Chongqing', 'Zhangjiajie', 'Shanghai'];
+    const NOM_CIUTAT = { General: 'Tot el viatge' };
+    const MAX_COSTAT = 1300;    // píxels del costat llarg de la captura
+    const MAX_PES = 260000;     // caràcters del data URL (~190 kB de JPEG)
+
+    // Identificador d'aquest dispositiu: serveix per als cors i per saber què has
+    // escrit tu (i poder-ho esborrar). No identifica ningú, viu al navegador.
+    const dev = (() => {
+      let d = null;
+      try { d = localStorage.getItem('xina-idees-dev'); } catch (e) { }
+      if (!d) {
+        d = (crypto.randomUUID ? crypto.randomUUID() : 'd' + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36));
+        try { localStorage.setItem('xina-idees-dev', d); } catch (e) { }
+      }
+      return d;
+    })();
+
+    const store = (v) => { try { return JSON.parse(localStorage.getItem(v)) || null; } catch (e) { return null; } };
+    const guarda = (k, v) => { localStorage.setItem(k, JSON.stringify(v)); };
+    const guardaFluix = (k, v) => { try { guarda(k, v); } catch (e) { } };
+    const meves = () => store('xina-idees-meves') || [];
+
+    /* ---- On es guarden les idees ---- */
+
+    function magatzemLocal() {
+      const KEY = 'xina-idees-local';
+      const llegeix = () => {
+        const d = store(KEY) || {};
+        return { idees: d.idees || {}, cors: d.cors || {}, imatges: d.imatges || {} };
+      };
+      return {
+        compartit: false,
+        async carrega() { const d = llegeix(); return { idees: d.idees, cors: d.cors }; },
+        async afegeix(idea) {
+          const d = llegeix();
+          const id = 'local-' + Date.now().toString(36);
+          d.idees[id] = Object.assign({}, idea, { ts: Date.now() });
+          guarda(KEY, d); return id;
+        },
+        async esborra(id) {
+          const d = llegeix(); delete d.idees[id]; delete d.cors[id]; delete d.imatges[id]; guardaFluix(KEY, d);
+        },
+        async cor(id, actiu) {
+          const d = llegeix();
+          d.cors[id] = d.cors[id] || {};
+          if (actiu) d.cors[id][dev] = true; else delete d.cors[id][dev];
+          guardaFluix(KEY, d);
+        },
+        async imatge(id) { return llegeix().imatges[id] || null; },
+        async posaImatge(id, dades) { const d = llegeix(); d.imatges[id] = dades; guarda(KEY, d); }
+      };
+    }
+
+    function magatzemCompartit(base) {
+      const arrel = base.replace(/\/+$/, '');
+      async function crida(cami, opts) {
+        const r = await fetch(arrel + cami, opts);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const txt = await r.text();
+        return txt ? JSON.parse(txt) : null;
+      }
+      const cami = (n, id) => '/' + n + '/' + encodeURIComponent(id) + '.json';
+      return {
+        compartit: true,
+        async carrega() {
+          const [idees, cors] = await Promise.all([crida('/idees.json'), crida('/cors.json')]);
+          return { idees: idees || {}, cors: cors || {} };
+        },
+        async afegeix(idea) {
+          // ts pel rellotge del servidor: així l'ordre no depèn de l'hora de cada mòbil.
+          const cos = JSON.stringify(Object.assign({}, idea, { ts: { '.sv': 'timestamp' } }));
+          const r = await crida('/idees.json', { method: 'POST', body: cos });
+          return r && r.name;
+        },
+        async esborra(id) {
+          await crida(cami('idees', id), { method: 'DELETE' });
+          crida(cami('cors', id), { method: 'DELETE' }).catch(() => { });
+          crida(cami('imatges', id), { method: 'DELETE' }).catch(() => { });
+        },
+        async cor(id, actiu) {
+          const p = '/cors/' + encodeURIComponent(id) + '/' + encodeURIComponent(dev) + '.json';
+          await crida(p, actiu ? { method: 'PUT', body: 'true' } : { method: 'DELETE' });
+        },
+        async imatge(id) { return crida(cami('imatges', id)); },
+        async posaImatge(id, dades) { await crida(cami('imatges', id), { method: 'PUT', body: JSON.stringify(dades) }); }
+      };
+    }
+
+    const db = IDEES_DB ? magatzemCompartit(IDEES_DB) : magatzemLocal();
+    if (!db.compartit) {
+      const avis = document.getElementById('ideaLocalWarn');
+      if (avis) avis.hidden = false;
+    }
+
+    /* ---- Captures: reduir al navegador abans d'enviar ---- */
+
+    function redueixImatge(fitxer) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(fitxer);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          try {
+            const qualitats = [0.72, 0.62, 0.55, 0.48, 0.42, 0.36];
+            let escala = Math.min(1, MAX_COSTAT / Math.max(img.width, img.height));
+            for (let i = 0; i < qualitats.length; i++) {
+              const w = Math.max(1, Math.round(img.width * escala));
+              const h = Math.max(1, Math.round(img.height * escala));
+              const c = document.createElement('canvas');
+              c.width = w; c.height = h;
+              const ctx = c.getContext('2d');
+              ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(img, 0, 0, w, h);
+              const dades = c.toDataURL('image/jpeg', qualitats[i]);
+              if (dades.length <= MAX_PES || i === qualitats.length - 1) return resolve(dades);
+              escala *= 0.82;
+            }
+          } catch (e) { reject(e); }
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('no llegible')); };
+        img.src = url;
+      });
+    }
+
+    const cacheImg = {};
+    const ioImg = ('IntersectionObserver' in window) ? new IntersectionObserver((entrades) => {
+      entrades.forEach(e => {
+        if (e.isIntersecting) { ioImg.unobserve(e.target); carregaImatge(e.target); }
+      });
+    }, { rootMargin: '250px' }) : null;
+
+    function posaImatge(caixa, dades) {
+      caixa.textContent = '';
+      const im = document.createElement('img');
+      im.src = dades;
+      im.alt = 'Captura adjuntada a la idea';
+      im.addEventListener('click', () => obreVisor(dades));
+      caixa.append(im);
+    }
+
+    async function carregaImatge(caixa) {
+      const id = caixa.dataset.idea;
+      if (cacheImg[id]) return posaImatge(caixa, cacheImg[id]);
+      try {
+        const dades = await db.imatge(id);
+        if (typeof dades !== 'string' || dades.indexOf('data:image/') !== 0) throw new Error('buida');
+        cacheImg[id] = dades;
+        posaImatge(caixa, dades);
+      } catch (e) {
+        caixa.textContent = '📷 la captura no s\'ha pogut carregar';
+      }
+    }
+
+    function obreVisor(dades) {
+      const capa = document.createElement('div');
+      capa.className = 'idea-visor';
+      const im = document.createElement('img');
+      im.src = dades; im.alt = 'Captura';
+      im.addEventListener('click', e => e.stopPropagation());
+      const x = document.createElement('button');
+      x.type = 'button'; x.className = 'tanca'; x.textContent = '×';
+      x.setAttribute('aria-label', 'Tancar');
+      const esc = (e) => { if (e.key === 'Escape') tanca(); };
+      function tanca() { capa.remove(); document.removeEventListener('keydown', esc); }
+      capa.addEventListener('click', tanca);
+      x.addEventListener('click', tanca);
+      document.addEventListener('keydown', esc);
+      capa.append(im, x);
+      document.body.append(capa);
+    }
+
+    /* ---- Pintar ---- */
+
+    let dades = { idees: {}, cors: {} };
+    let filtre = 'tot';
+
+    function enllacSegur(u) {
+      if (!u) return null;
+      try {
+        const x = new URL(u);
+        return (x.protocol === 'http:' || x.protocol === 'https:') ? x.href : null;
+      } catch (e) { return null; }
+    }
+
+    const MESOS = ['gen.', 'febr.', 'març', 'abr.', 'maig', 'juny', 'jul.', 'ag.', 'set.', 'oct.', 'nov.', 'des.'];
+    function dataCurta(ts) {
+      if (!ts || typeof ts !== 'number') return '';
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      return d.getDate() + ' ' + MESOS[d.getMonth()];
+    }
+
+    function llista() {
+      return Object.keys(dades.idees)
+        .map(id => Object.assign({ id: id }, dades.idees[id]))
+        .filter(i => i && typeof i.titol === 'string' && i.titol)
+        .sort((a, b) => (b.ts || 0) - (a.ts || 0));
+    }
+
+    function targeta(idea) {
+      const cors = dades.cors[idea.id] || {};
+      const nCors = Object.keys(cors).filter(k => cors[k]).length;
+      const meu = !!cors[dev];
+      const propia = meves().indexOf(idea.id) !== -1;
+
+      const card = document.createElement('article');
+      card.className = 'idea-card';
+
+      const top = document.createElement('div');
+      top.className = 'ic-top';
+      const cat = document.createElement('span');
+      cat.className = 'ic-cat';
+      cat.textContent = CATS[idea.cat] || CATS.altres;
+      const ciutat = document.createElement('span');
+      ciutat.className = 'ic-city';
+      ciutat.textContent = NOM_CIUTAT[idea.ciutat] || idea.ciutat || 'Tot el viatge';
+      top.append(cat, ciutat);
+
+      const h3 = document.createElement('h3');
+      h3.textContent = idea.titol;
+      card.append(top, h3);
+
+      if (idea.nota) {
+        const p = document.createElement('p');
+        p.textContent = idea.nota;
+        card.append(p);
+      }
+
+      if (idea.img) {
+        const caixa = document.createElement('div');
+        caixa.className = 'ic-shot';
+        caixa.dataset.idea = idea.id;
+        caixa.textContent = '📷 carregant la captura…';
+        card.append(caixa);
+        if (cacheImg[idea.id]) posaImatge(caixa, cacheImg[idea.id]);
+        else if (ioImg) ioImg.observe(caixa);
+        else carregaImatge(caixa);
+      }
+
+      const url = enllacSegur(idea.enllac);
+      if (url) {
+        const a = document.createElement('a');
+        a.className = 'ic-link';
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.textContent = '🔗 ' + (url.replace(/^https?:\/\//, '').split('/')[0] || url);
+        card.append(a);
+      }
+
+      const foot = document.createElement('div');
+      foot.className = 'ic-foot';
+      const qui = document.createElement('span');
+      qui.className = 'ic-who';
+      const quan = dataCurta(idea.ts);
+      qui.textContent = (idea.nom || 'Algú') + (quan ? ' · ' + quan : '');
+      const cor = document.createElement('button');
+      cor.type = 'button';
+      cor.className = 'ic-btn' + (meu ? ' on' : '');
+      cor.textContent = (meu ? '❤️' : '🤍') + (nCors ? ' ' + nCors : '');
+      cor.title = meu ? 'Ja t\'agrada' : 'M\'agrada';
+      cor.addEventListener('click', () => fesCor(idea.id, !meu, cor));
+      foot.append(qui, cor);
+
+      if (propia) {
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'ic-btn ic-del';
+        del.textContent = '🗑';
+        del.title = 'Esborrar aquesta idea';
+        del.addEventListener('click', () => esborra(idea.id, idea.titol));
+        foot.append(del);
+      }
+
+      card.append(foot);
+      return card;
+    }
+
+    function pintaFiltres(items) {
+      const compte = { tot: items.length };
+      items.forEach(i => {
+        const c = CIUTATS.indexOf(i.ciutat) !== -1 ? i.ciutat : 'General';
+        compte[c] = (compte[c] || 0) + 1;
+      });
+      const usats = CIUTATS.filter(c => compte[c]);
+      filtres.hidden = usats.length < 2;
+      if (filtres.hidden) { filtre = 'tot'; filtres.textContent = ''; return; }
+      filtres.textContent = '';
+      [['tot', 'Tot (' + compte.tot + ')']].concat(
+        usats.map(c => [c, (NOM_CIUTAT[c] || c) + ' (' + compte[c] + ')'])
+      ).forEach((parell) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'idea-chip' + (filtre === parell[0] ? ' on' : '');
+        b.textContent = parell[1];
+        b.addEventListener('click', () => { filtre = parell[0]; pinta(); });
+        filtres.append(b);
+      });
+    }
+
+    function pinta() {
+      const items = llista();
+      pintaFiltres(items);
+      const visibles = filtre === 'tot' ? items
+        : items.filter(i => (CIUTATS.indexOf(i.ciutat) !== -1 ? i.ciutat : 'General') === filtre);
+      wall.textContent = '';
+      visibles.forEach(i => wall.append(targeta(i)));
+      estat.classList.remove('err');
+      if (!items.length) estat.textContent = 'Encara no hi ha res apuntat. Comença tu! 🏮';
+      else estat.textContent = items.length === 1 ? '1 idea apuntada.' : items.length + ' idees apuntades.';
+    }
+
+    /* ---- Accions ---- */
+
+    async function refresca(silenciosa) {
+      try {
+        dades = await db.carrega();
+        pinta();
+      } catch (e) {
+        if (!silenciosa) {
+          estat.textContent = 'No s\'ha pogut connectar amb la llista compartida. Comprova la connexió (a la Xina, amb la VPN de l\'eSIM engegada) i torna-ho a provar.';
+          estat.classList.add('err');
+        }
+      }
+    }
+
+    async function fesCor(id, actiu, boto) {
+      boto.disabled = true;
+      dades.cors[id] = dades.cors[id] || {};
+      if (actiu) dades.cors[id][dev] = true; else delete dades.cors[id][dev];
+      pinta();
+      try { await db.cor(id, actiu); } catch (e) { }
+      refresca(true);
+    }
+
+    async function esborra(id, titol) {
+      if (!confirm('Esborrar «' + titol + '»?')) return;
+      try {
+        await db.esborra(id);
+        guardaFluix('xina-idees-meves', meves().filter(x => x !== id));
+        delete dades.idees[id];
+        pinta();
+      } catch (e) {
+        msg.className = 'idea-msg err';
+        msg.textContent = 'No s\'ha pogut esborrar. Torna-ho a provar.';
+      }
+      refresca(true);
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const idea = {
+        nom: inputNom.value.trim().slice(0, 40),
+        ciutat: document.getElementById('ideaCiutat').value,
+        cat: document.getElementById('ideaCat').value,
+        titol: document.getElementById('ideaTitol').value.trim().slice(0, 120),
+        nota: document.getElementById('ideaNota').value.trim().slice(0, 600),
+        enllac: document.getElementById('ideaEnllac').value.trim().slice(0, 300)
+      };
+      if (!idea.nom || !idea.titol) {
+        msg.className = 'idea-msg err';
+        msg.textContent = 'Falta el teu nom o la idea.';
+        return;
+      }
+      btn.disabled = true;
+      msg.className = 'idea-msg';
+
+      const fitxer = inputFoto && inputFoto.files && inputFoto.files[0];
+      let foto = null;
+      if (fitxer) {
+        if (fitxer.type && fitxer.type.indexOf('image/') !== 0) {
+          msg.className = 'idea-msg err';
+          msg.textContent = 'La captura ha de ser una imatge.';
+          btn.disabled = false;
+          return;
+        }
+        msg.textContent = 'Preparant la captura…';
+        try {
+          foto = await redueixImatge(fitxer);
+          idea.img = 1;
+        } catch (e) {
+          msg.className = 'idea-msg err';
+          msg.textContent = 'No s\'ha pogut llegir la imatge. Prova amb una captura normal (JPG o PNG).';
+          btn.disabled = false;
+          return;
+        }
+      }
+
+      msg.textContent = 'Desant…';
+      try {
+        const id = await db.afegeix(idea);
+        if (id) guardaFluix('xina-idees-meves', meves().concat([id]));
+        guardaFluix('xina-idees-nom', idea.nom);
+        inputNom.value = idea.nom;
+        let avisFoto = '';
+        if (foto && id) {
+          try { await db.posaImatge(id, foto); cacheImg[id] = foto; }
+          catch (e) { avisFoto = ' (la captura no s\'ha pogut adjuntar)'; }
+        }
+        document.getElementById('ideaTitol').value = '';
+        document.getElementById('ideaNota').value = '';
+        document.getElementById('ideaEnllac').value = '';
+        if (inputFoto) inputFoto.value = '';
+        msg.className = avisFoto ? 'idea-msg err' : 'idea-msg ok';
+        msg.textContent = (db.compartit ? 'Apuntat! Ja ho veu tothom 🏮' : 'Apuntat en aquest dispositiu 🏮') + avisFoto;
+        await refresca(true);
+      } catch (e) {
+        msg.className = 'idea-msg err';
+        msg.textContent = 'No s\'ha pogut desar. Comprova la connexió i torna-ho a provar.';
+      }
+      btn.disabled = false;
+      setTimeout(() => {
+        if (msg.classList.contains('ok')) { msg.textContent = ''; msg.className = 'idea-msg'; }
+      }, 6000);
+    });
+
+    const nomDesat = store('xina-idees-nom');
+    if (typeof nomDesat === 'string') inputNom.value = nomDesat;
+
+    refresca();
+    // Sense SDK no hi ha temps real: es rellegeix cada 20 s i quan tornes a la pestanya.
+    setInterval(() => { if (!document.hidden) refresca(true); }, 20000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refresca(true); });
+  })();
 
 </script>
 </body>

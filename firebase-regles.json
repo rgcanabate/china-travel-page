@@ -1,0 +1,42 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "idees": {
+      ".read": true,
+      "$id": {
+        ".write": "newData.exists() ? !data.exists() : true",
+        ".validate": "newData.hasChildren(['nom', 'titol', 'ciutat', 'cat', 'ts'])",
+        "nom":    { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40" },
+        "titol":  { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+        "nota":   { ".validate": "newData.isString() && newData.val().length <= 600" },
+        "enllac": { ".validate": "newData.isString() && newData.val().length <= 300" },
+        "ciutat": { ".validate": "newData.isString() && newData.val().length <= 20" },
+        "cat":    { ".validate": "newData.isString() && newData.val().length <= 20" },
+        "img":    { ".validate": "newData.isNumber()" },
+        "ts":     { ".validate": "newData.val() === now" },
+        "$altres": { ".validate": false }
+      }
+    },
+
+    "cors": {
+      ".read": true,
+      "$id": {
+        ".write": "!newData.exists()",
+        "$dispositiu": {
+          ".write": true,
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+
+    "imatges": {
+      "$id": {
+        ".read": true,
+        ".write": "newData.exists() ? !data.exists() : true",
+        ".validate": "newData.isString() && newData.val().length <= 400000"
+      }
+    }
+  }
+}
