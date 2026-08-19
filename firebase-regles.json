@@ -31,6 +31,22 @@
       }
     },
 
+    "grups": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"
+      }
+    },
+
+    "temes": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+      }
+    },
+
     "imatges": {
       "$id": {
         ".read": true,

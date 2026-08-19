@@ -440,6 +440,8 @@
   }
 
   .idea-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.6rem; }
+  /* "display: flex" guanya al hidden del navegador: cal dir-ho explícitament */
+  .idea-filters[hidden], .idea-banner[hidden] { display: none; }
   .idea-chip {
     background: transparent; border: 1px solid rgba(176, 30, 40, 0.3); color: var(--red);
     border-radius: 999px; padding: 0.35rem 0.95rem; font-family: inherit; font-size: 0.82rem;
@@ -489,6 +491,35 @@
   .ic-btn:hover { color: var(--red); }
   .ic-btn.on { color: var(--red); font-weight: 700; }
   .ic-btn.ic-del { margin-left: auto; }
+  /* Targetes ajuntades sota un mateix tema */
+  .idea-group {
+    background: #FFFCF6; border: 1px solid #eadfcd; border-left: 4px solid var(--red);
+    border-radius: 4px; padding: 0.7rem; box-shadow: 0 4px 16px var(--shadow);
+    display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .ig-head {
+    display: flex; align-items: baseline; gap: 0.5rem;
+    padding: 0.1rem 0.4rem 0.5rem; border-bottom: 2px solid var(--gold);
+  }
+  .ig-title { font-size: 0.98rem; font-weight: 700; color: var(--red); overflow-wrap: anywhere; }
+  .ig-count { font-size: 0.72rem; color: #8a7a70; margin-left: auto; white-space: nowrap; }
+  .idea-card.in-group {
+    box-shadow: none; border-left: 3px solid var(--gold); padding: 0.9rem 1rem;
+  }
+  .idea-card.in-group:hover { transform: none; box-shadow: none; }
+  .idea-card.unint-origen { outline: 2px dashed var(--red); outline-offset: 3px; }
+  .idea-banner {
+    background: #FFF8F0; border-left: 3px solid var(--red); border-radius: 3px;
+    padding: 0.7rem 0.9rem; margin-bottom: 1.2rem; font-size: 0.88rem; color: #3d322d;
+    display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+  }
+  .ic-tria {
+    background: var(--red); color: var(--cream); border: none; border-radius: 2px;
+    padding: 0.3rem 0.75rem; font-family: inherit; font-size: 0.76rem; font-weight: 700;
+    cursor: pointer; margin-left: auto;
+  }
+  .ic-tria:hover { background: var(--red-deep); }
+
   .idea-state { margin-top: 1.3rem; font-size: 0.85rem; color: #6b5d55; font-style: italic; }
   .idea-state.err { color: var(--red); font-style: normal; font-weight: 600; }
 
@@ -822,6 +853,7 @@
     </form>
 
     <div class="idea-filters reveal" id="ideaFilters" hidden></div>
+    <div class="idea-banner" id="ideaBanner" role="status" hidden></div>
     <div class="idea-wall" id="ideaWall"></div>
     <p class="idea-state" id="ideaState">Carregant les idees…</p>
   </div>
@@ -1071,6 +1103,7 @@
     const filtres = document.getElementById('ideaFilters');
     const inputNom = document.getElementById('ideaNom');
     const inputFoto = document.getElementById('ideaFoto');
+    const banner = document.getElementById('ideaBanner');
 
     const CATS = {
       visita:     '🏯 Lloc per veure',
@@ -1100,7 +1133,7 @@
     const store = (v) => { try { return JSON.parse(localStorage.getItem(v)) || null; } catch (e) { return null; } };
     const guarda = (k, v) => { localStorage.setItem(k, JSON.stringify(v)); };
     const guardaFluix = (k, v) => { try { guarda(k, v); } catch (e) { } };
-    const meves = () => store('xina-idees-meves') || [];
+    const msgErr = (t) => { msg.className = 'idea-msg err'; msg.textContent = t; };
 
     /* ---- On es guarden les idees ---- */
 
@@ -1108,11 +1141,17 @@
       const KEY = 'xina-idees-local';
       const llegeix = () => {
         const d = store(KEY) || {};
-        return { idees: d.idees || {}, cors: d.cors || {}, imatges: d.imatges || {} };
+        return {
+          idees: d.idees || {}, cors: d.cors || {}, imatges: d.imatges || {},
+          grups: d.grups || {}, temes: d.temes || {}
+        };
       };
       return {
         compartit: false,
-        async carrega() { const d = llegeix(); return { idees: d.idees, cors: d.cors }; },
+        async carrega() {
+          const d = llegeix();
+          return { idees: d.idees, cors: d.cors, grups: d.grups, temes: d.temes };
+        },
         async afegeix(idea) {
           const d = llegeix();
           const id = 'local-' + Date.now().toString(36);
@@ -1120,7 +1159,19 @@
           guarda(KEY, d); return id;
         },
         async esborra(id) {
-          const d = llegeix(); delete d.idees[id]; delete d.cors[id]; delete d.imatges[id]; guardaFluix(KEY, d);
+          const d = llegeix();
+          delete d.idees[id]; delete d.cors[id]; delete d.imatges[id]; delete d.grups[id];
+          guardaFluix(KEY, d);
+        },
+        async posaGrup(id, grup) {
+          const d = llegeix();
+          if (grup) d.grups[id] = grup; else delete d.grups[id];
+          guardaFluix(KEY, d);
+        },
+        async posaTema(grup, titol) {
+          const d = llegeix();
+          if (titol) d.temes[grup] = titol; else delete d.temes[grup];
+          guardaFluix(KEY, d);
         },
         async cor(id, actiu) {
           const d = llegeix();
@@ -1145,8 +1196,10 @@
       return {
         compartit: true,
         async carrega() {
-          const [idees, cors] = await Promise.all([crida('/idees.json'), crida('/cors.json')]);
-          return { idees: idees || {}, cors: cors || {} };
+          const [idees, cors, grups, temes] = await Promise.all([
+            crida('/idees.json'), crida('/cors.json'), crida('/grups.json'), crida('/temes.json')
+          ]);
+          return { idees: idees || {}, cors: cors || {}, grups: grups || {}, temes: temes || {} };
         },
         async afegeix(idea) {
           // ts pel rellotge del servidor: així l'ordre no depèn de l'hora de cada mòbil.
@@ -1158,6 +1211,13 @@
           await crida(cami('idees', id), { method: 'DELETE' });
           crida(cami('cors', id), { method: 'DELETE' }).catch(() => { });
           crida(cami('imatges', id), { method: 'DELETE' }).catch(() => { });
+          crida(cami('grups', id), { method: 'DELETE' }).catch(() => { });
+        },
+        async posaGrup(id, grup) {
+          await crida(cami('grups', id), grup ? { method: 'PUT', body: JSON.stringify(grup) } : { method: 'DELETE' });
+        },
+        async posaTema(grup, titol) {
+          await crida(cami('temes', grup), titol ? { method: 'PUT', body: JSON.stringify(titol) } : { method: 'DELETE' });
         },
         async cor(id, actiu) {
           const p = '/cors/' + encodeURIComponent(id) + '/' + encodeURIComponent(dev) + '.json';
@@ -1253,8 +1313,9 @@
 
     /* ---- Pintar ---- */
 
-    let dades = { idees: {}, cors: {} };
+    let dades = { idees: {}, cors: {}, grups: {}, temes: {} };
     let filtre = 'tot';
+    let unint = null;   // id de la targeta que estem ajuntant amb una altra
 
     function enllacSegur(u) {
       if (!u) return null;
@@ -1279,14 +1340,13 @@
         .sort((a, b) => (b.ts || 0) - (a.ts || 0));
     }
 
-    function targeta(idea) {
+    function targeta(idea, dinsGrup) {
       const cors = dades.cors[idea.id] || {};
       const nCors = Object.keys(cors).filter(k => cors[k]).length;
       const meu = !!cors[dev];
-      const propia = meves().indexOf(idea.id) !== -1;
 
       const card = document.createElement('article');
-      card.className = 'idea-card';
+      card.className = 'idea-card' + (dinsGrup ? ' in-group' : '') + (unint === idea.id ? ' unint-origen' : '');
 
       const top = document.createElement('div');
       top.className = 'ic-top';
@@ -1342,18 +1402,78 @@
       cor.addEventListener('click', () => fesCor(idea.id, !meu, cor));
       foot.append(qui, cor);
 
-      if (propia) {
-        const del = document.createElement('button');
-        del.type = 'button';
-        del.className = 'ic-btn ic-del';
-        del.textContent = '🗑';
-        del.title = 'Esborrar aquesta idea';
-        del.addEventListener('click', () => esborra(idea.id, idea.titol));
-        foot.append(del);
+      if (unint && unint !== idea.id) {
+        // Estem triant amb quina targeta ajuntar-ne una altra.
+        const tria = document.createElement('button');
+        tria.type = 'button';
+        tria.className = 'ic-tria';
+        tria.textContent = 'Ajuntar aquí';
+        tria.addEventListener('click', () => ajunta(unint, idea.id));
+        foot.append(tria);
+      } else if (!unint) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ic-btn';
+        if (dades.grups[idea.id]) {
+          b.textContent = '⤴';
+          b.title = 'Treure del tema';
+          b.addEventListener('click', () => separa(idea.id));
+        } else {
+          b.textContent = '⇄';
+          b.title = 'Ajuntar amb una altra targeta que parli del mateix';
+          b.addEventListener('click', () => comencaUnio(idea.id));
+        }
+        foot.append(b);
       }
+
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'ic-btn ic-del';
+      del.textContent = '🗑';
+      del.title = 'Esborrar aquesta idea';
+      del.addEventListener('click', () => esborra(idea.id, idea.titol));
+      foot.append(del);
 
       card.append(foot);
       return card;
+    }
+
+    function caixaGrup(grup, membres) {
+      const box = document.createElement('div');
+      box.className = 'idea-group';
+      const cap = document.createElement('div');
+      cap.className = 'ig-head';
+      const tit = document.createElement('span');
+      tit.className = 'ig-title';
+      tit.textContent = dades.temes[grup] || 'Mateix tema';
+      const n = document.createElement('span');
+      n.className = 'ig-count';
+      n.textContent = membres.length + ' idees';
+      const ed = document.createElement('button');
+      ed.type = 'button';
+      ed.className = 'ic-btn';
+      ed.textContent = '✎';
+      ed.title = 'Canviar el nom del tema';
+      ed.addEventListener('click', () => reanomena(grup));
+      cap.append(tit, n, ed);
+      box.append(cap);
+      membres.forEach(m => box.append(targeta(m, true)));
+      return box;
+    }
+
+    function pintaBanner() {
+      banner.textContent = '';
+      if (!unint) { banner.hidden = true; return; }
+      banner.hidden = false;
+      const idea = dades.idees[unint];
+      const t = document.createElement('span');
+      t.textContent = 'Ajuntant «' + ((idea && idea.titol) || '') + '»: tria la targeta que parla del mateix.';
+      const c = document.createElement('button');
+      c.type = 'button';
+      c.className = 'idea-chip';
+      c.textContent = 'Cancel·lar';
+      c.addEventListener('click', () => { unint = null; pinta(); });
+      banner.append(t, c);
     }
 
     function pintaFiltres(items) {
@@ -1383,8 +1503,28 @@
       pintaFiltres(items);
       const visibles = filtre === 'tot' ? items
         : items.filter(i => (CIUTATS.indexOf(i.ciutat) !== -1 ? i.ciutat : 'General') === filtre);
+      pintaBanner();
+
+      // Cada bloc del mur és o una targeta sola o un tema amb diverses targetes.
+      // Un tema que es queda amb un sol membre visible es pinta com a targeta sola.
+      const perGrup = {};
+      const blocs = [];
+      visibles.forEach(i => {
+        const g = dades.grups[i.id];
+        if (g) (perGrup[g] = perGrup[g] || []).push(i);
+        else blocs.push({ ts: i.ts || 0, item: i });
+      });
+      Object.keys(perGrup).forEach(g => {
+        const membres = perGrup[g];
+        if (membres.length < 2) { membres.forEach(i => blocs.push({ ts: i.ts || 0, item: i })); return; }
+        let ts = 0;
+        membres.forEach(m => { if ((m.ts || 0) > ts) ts = m.ts || 0; });
+        blocs.push({ ts: ts, grup: g, membres: membres });
+      });
+      blocs.sort((a, b) => b.ts - a.ts);
+
       wall.textContent = '';
-      visibles.forEach(i => wall.append(targeta(i)));
+      blocs.forEach(b => wall.append(b.grup ? caixaGrup(b.grup, b.membres) : targeta(b.item, false)));
       estat.classList.remove('err');
       if (!items.length) estat.textContent = 'Encara no hi ha res apuntat. Comença tu! 🏮';
       else estat.textContent = items.length === 1 ? '1 idea apuntada.' : items.length + ' idees apuntades.';
@@ -1414,16 +1554,83 @@
     }
 
     async function esborra(id, titol) {
-      if (!confirm('Esborrar «' + titol + '»?')) return;
+      if (!confirm('Esborrar «' + titol + '»? Desapareix per a tothom.')) return;
+      const grup = dades.grups[id];
       try {
         await db.esborra(id);
-        guardaFluix('xina-idees-meves', meves().filter(x => x !== id));
         delete dades.idees[id];
+        delete dades.grups[id];
+        if (unint === id) unint = null;
         pinta();
+        if (grup) await netejaGrup(grup);
       } catch (e) {
-        msg.className = 'idea-msg err';
-        msg.textContent = 'No s\'ha pogut esborrar. Torna-ho a provar.';
+        msgErr('No s\'ha pogut esborrar. Torna-ho a provar.');
       }
+      refresca(true);
+    }
+
+    function comencaUnio(id) {
+      unint = id;
+      pinta();
+    }
+
+    // Ajunta la targeta "a" al tema de la "b". Si cap de les dues en té, en neix
+    // un de nou identificat per la targeta de destinació.
+    async function ajunta(a, b) {
+      unint = null;
+      if (a === b || !dades.idees[a] || !dades.idees[b]) { pinta(); return; }
+      const grupAnterior = dades.grups[a];
+      const grupB = dades.grups[b];
+      const grup = grupB || dades.grups[a] || b;
+      dades.grups[a] = grup;
+      dades.grups[b] = grup;
+      const titol = dades.temes[grup] || (dades.idees[b].titol || 'Mateix tema').slice(0, 80);
+      if (!dades.temes[grup]) dades.temes[grup] = titol;
+      pinta();
+      try {
+        await db.posaGrup(a, grup);
+        if (grupB !== grup) await db.posaGrup(b, grup);
+        await db.posaTema(grup, titol);
+        if (grupAnterior && grupAnterior !== grup) await netejaGrup(grupAnterior);
+      } catch (e) {
+        msgErr('No s\'ha pogut ajuntar. Torna-ho a provar.');
+      }
+      refresca(true);
+    }
+
+    async function separa(id) {
+      const grup = dades.grups[id];
+      delete dades.grups[id];
+      pinta();
+      try {
+        await db.posaGrup(id, null);
+        if (grup) await netejaGrup(grup);
+      } catch (e) {
+        msgErr('No s\'ha pogut treure del tema.');
+      }
+      refresca(true);
+    }
+
+    // Un tema amb una sola targeta ja no és un tema: es desfà.
+    async function netejaGrup(grup) {
+      const membres = Object.keys(dades.grups).filter(k => dades.grups[k] === grup);
+      if (membres.length > 1) return;
+      membres.forEach(k => { delete dades.grups[k]; });
+      delete dades.temes[grup];
+      try {
+        await Promise.all(membres.map(k => db.posaGrup(k, null)).concat([db.posaTema(grup, null)]));
+      } catch (e) { }
+    }
+
+    async function reanomena(grup) {
+      const nou = prompt('Nom del tema:', dades.temes[grup] || '');
+      if (nou === null) return;
+      const net = nou.trim().slice(0, 80);
+      if (!net) return;
+      dades.temes[grup] = net;
+      pinta();
+      try { await db.posaTema(grup, net); }
+      catch (e) { msgErr('No s\'ha pogut canviar el nom del tema.'); }
       refresca(true);
     }
 
@@ -1469,7 +1676,6 @@
       msg.textContent = 'Desant…';
       try {
         const id = await db.afegeix(idea);
-        if (id) guardaFluix('xina-idees-meves', meves().concat([id]));
         guardaFluix('xina-idees-nom', idea.nom);
         inputNom.value = idea.nom;
         let avisFoto = '';
@@ -1501,6 +1707,7 @@
     // Sense SDK no hi ha temps real: es rellegeix cada 20 s i quan tornes a la pestanya.
     setInterval(() => { if (!document.hidden) refresca(true); }, 20000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) refresca(true); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && unint) { unint = null; pinta(); } });
   })();
 
 </script>
