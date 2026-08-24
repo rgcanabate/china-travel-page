@@ -51,7 +51,10 @@
       "$id": {
         ".read": true,
         ".write": "newData.exists() ? !data.exists() : true",
-        ".validate": "newData.isString() && newData.val().length <= 400000"
+        ".validate": "!newData.isString() || newData.val().length <= 400000",
+        "$n": {
+          ".validate": "$n.matches(/^[0-5]$/) && newData.isString() && newData.val().length <= 400000"
+        }
       }
     }
   }

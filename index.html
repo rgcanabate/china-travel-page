@@ -475,10 +475,20 @@
   .idea-card .ic-link:hover { border-bottom-color: var(--red); }
   .ic-shot {
     margin: 0.2rem 0; border: 1px solid #eadfcd; border-radius: 3px; background: var(--paper);
-    min-height: 54px; display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; color: #8a7a70; overflow: hidden; padding: 0;
+    min-height: 54px; display: flex; flex-direction: column; justify-content: center;
+    text-align: center; font-size: 0.8rem; color: #8a7a70; overflow: hidden; padding: 0;
   }
-  .ic-shot img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .ic-shot > img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .ic-tira {
+    display: flex; gap: 0.25rem; padding: 0.3rem; background: #fff;
+    border-top: 1px solid #eadfcd; overflow-x: auto;
+  }
+  .ic-tira img {
+    width: 40px; height: 40px; object-fit: cover; border-radius: 2px; flex: 0 0 auto;
+    opacity: 0.5; cursor: pointer; transition: opacity 0.2s;
+  }
+  .ic-tira img:hover { opacity: 0.85; }
+  .ic-tira img.on { opacity: 1; outline: 2px solid var(--red); outline-offset: -2px; }
   .idea-card .ic-foot {
     display: flex; align-items: center; gap: 0.7rem; margin-top: auto; padding-top: 0.6rem;
     border-top: 1px dashed #eadfcd; font-size: 0.76rem; color: #8a7a70;
@@ -532,6 +542,18 @@
   .idea-visor .tanca {
     position: absolute; top: 1rem; right: 1.2rem; background: transparent; border: none;
     color: var(--cream); font-size: 2rem; cursor: pointer; line-height: 1;
+  }
+  .idea-visor .fletxa {
+    position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35);
+    border: none; color: var(--cream); font-size: 2.4rem; line-height: 1;
+    padding: 0.3rem 0.9rem; border-radius: 3px; cursor: pointer;
+  }
+  .idea-visor .fletxa:hover { background: rgba(0,0,0,0.6); }
+  .idea-visor .fletxa.esq { left: 0.6rem; }
+  .idea-visor .fletxa.dre { right: 0.6rem; }
+  .idea-visor .compte {
+    position: absolute; bottom: 1rem; left: 0; right: 0; text-align: center;
+    color: var(--cream); font-size: 0.85rem; letter-spacing: 0.05em;
   }
 
   @media (max-width: 700px) {
@@ -841,9 +863,9 @@
           <input type="url" id="ideaEnllac" name="enllac" maxlength="300" placeholder="https://…">
         </div>
         <div class="idea-field">
-          <label for="ideaFoto">Captura o foto (opcional)</label>
-          <input type="file" id="ideaFoto" name="foto" accept="image/*">
-          <span class="hint">Es redueix al mòbil abans d'enviar-la. Truc: a l'iPhone pots copiar el text de dins la captura i enganxar-lo als detalls.</span>
+          <label for="ideaFoto">Captures o fotos (opcional)</label>
+          <input type="file" id="ideaFoto" name="foto" accept="image/*" multiple>
+          <span class="hint">Pots triar-ne unes quantes de cop (fins a 6) i van totes a la mateixa idea. Es redueixen al mòbil abans d'enviar-les.</span>
         </div>
       </div>
       <div class="idea-actions">
@@ -1117,6 +1139,7 @@
     const NOM_CIUTAT = { General: 'Tot el viatge' };
     const MAX_COSTAT = 1300;    // píxels del costat llarg de la captura
     const MAX_PES = 260000;     // caràcters del data URL (~190 kB de JPEG)
+    const MAX_FOTOS = 6;        // captures per idea (el límit també és a les regles)
 
     // Identificador d'aquest dispositiu: serveix per als cors i per saber què has
     // escrit tu (i poder-ho esborrar). No identifica ningú, viu al navegador.
@@ -1180,7 +1203,7 @@
           guardaFluix(KEY, d);
         },
         async imatge(id) { return llegeix().imatges[id] || null; },
-        async posaImatge(id, dades) { const d = llegeix(); d.imatges[id] = dades; guarda(KEY, d); }
+        async posaImatges(id, llista) { const d = llegeix(); d.imatges[id] = llista.slice(); guarda(KEY, d); }
       };
     }
 
@@ -1224,7 +1247,13 @@
           await crida(p, actiu ? { method: 'PUT', body: 'true' } : { method: 'DELETE' });
         },
         async imatge(id) { return crida(cami('imatges', id)); },
-        async posaImatge(id, dades) { await crida(cami('imatges', id), { method: 'PUT', body: JSON.stringify(dades) }); }
+        async posaImatges(id, llista) {
+          // Totes en una sola escriptura (/imatges/<idea> = {0:…, 1:…}): o hi són
+          // totes o no n'hi ha cap, mai a mitges.
+          const obj = {};
+          llista.forEach((dades, i) => { obj[i] = dades; });
+          await crida(cami('imatges', id), { method: 'PUT', body: JSON.stringify(obj) });
+        }
       };
     }
 
@@ -1271,43 +1300,105 @@
       });
     }, { rootMargin: '250px' }) : null;
 
-    function posaImatge(caixa, dades) {
+    // Les idees d'abans tenen una sola captura desada com a text i les noves una
+    // llista de fills: aquí s'unifiquen en un array.
+    function normalitzaImatges(dades) {
+      const bona = s => typeof s === 'string' && s.indexOf('data:image/') === 0;
+      if (bona(dades)) return [dades];
+      if (dades && typeof dades === 'object') {
+        return Object.keys(dades)
+          .sort((a, b) => Number(a) - Number(b))
+          .map(k => dades[k])
+          .filter(bona);
+      }
+      return [];
+    }
+
+    function posaImatges(caixa, llista) {
       caixa.textContent = '';
-      const im = document.createElement('img');
-      im.src = dades;
-      im.alt = 'Captura adjuntada a la idea';
-      im.addEventListener('click', () => obreVisor(dades));
-      caixa.append(im);
+      caixa.classList.remove('buida');
+      if (!llista.length) { caixa.textContent = '📷 la captura no s\'ha pogut carregar'; return; }
+      let actual = 0;
+      const gran = document.createElement('img');
+      gran.src = llista[0];
+      gran.alt = 'Captura adjuntada a la idea';
+      gran.addEventListener('click', () => obreVisor(llista, actual));
+      caixa.append(gran);
+      if (llista.length < 2) return;
+      const tira = document.createElement('div');
+      tira.className = 'ic-tira';
+      llista.forEach((dades, i) => {
+        const petita = document.createElement('img');
+        petita.src = dades;
+        petita.alt = 'Captura ' + (i + 1) + ' de ' + llista.length;
+        if (i === 0) petita.className = 'on';
+        petita.addEventListener('click', () => {
+          actual = i;
+          gran.src = dades;
+          tira.querySelectorAll('img').forEach((x, j) => { x.className = j === i ? 'on' : ''; });
+        });
+        tira.append(petita);
+      });
+      caixa.append(tira);
     }
 
     async function carregaImatge(caixa) {
       const id = caixa.dataset.idea;
-      if (cacheImg[id]) return posaImatge(caixa, cacheImg[id]);
+      if (cacheImg[id]) return posaImatges(caixa, cacheImg[id]);
       try {
-        const dades = await db.imatge(id);
-        if (typeof dades !== 'string' || dades.indexOf('data:image/') !== 0) throw new Error('buida');
-        cacheImg[id] = dades;
-        posaImatge(caixa, dades);
+        const llista = normalitzaImatges(await db.imatge(id));
+        if (!llista.length) throw new Error('buida');
+        cacheImg[id] = llista;
+        posaImatges(caixa, llista);
       } catch (e) {
         caixa.textContent = '📷 la captura no s\'ha pogut carregar';
       }
     }
 
-    function obreVisor(dades) {
+    function obreVisor(llista, inici) {
+      let i = Math.max(0, Math.min(inici || 0, llista.length - 1));
       const capa = document.createElement('div');
       capa.className = 'idea-visor';
       const im = document.createElement('img');
-      im.src = dades; im.alt = 'Captura';
+      im.alt = 'Captura';
       im.addEventListener('click', e => e.stopPropagation());
+      const compte = document.createElement('div');
+      compte.className = 'compte';
       const x = document.createElement('button');
       x.type = 'button'; x.className = 'tanca'; x.textContent = '×';
       x.setAttribute('aria-label', 'Tancar');
-      const esc = (e) => { if (e.key === 'Escape') tanca(); };
-      function tanca() { capa.remove(); document.removeEventListener('keydown', esc); }
+
+      function mostra() {
+        im.src = llista[i];
+        compte.textContent = llista.length > 1 ? (i + 1) + ' / ' + llista.length : '';
+      }
+      function tanca() { capa.remove(); document.removeEventListener('keydown', tecles); }
+      function passa(pas) {
+        i = (i + pas + llista.length) % llista.length;
+        mostra();
+      }
+      function tecles(e) {
+        if (e.key === 'Escape') tanca();
+        else if (llista.length > 1 && e.key === 'ArrowLeft') passa(-1);
+        else if (llista.length > 1 && e.key === 'ArrowRight') passa(1);
+      }
+
       capa.addEventListener('click', tanca);
       x.addEventListener('click', tanca);
-      document.addEventListener('keydown', esc);
-      capa.append(im, x);
+      document.addEventListener('keydown', tecles);
+      capa.append(im, x, compte);
+      if (llista.length > 1) {
+        [['esq', '‹', -1], ['dre', '›', 1]].forEach((f) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'fletxa ' + f[0];
+          b.textContent = f[1];
+          b.setAttribute('aria-label', f[2] < 0 ? 'Anterior' : 'Següent');
+          b.addEventListener('click', (e) => { e.stopPropagation(); passa(f[2]); });
+          capa.append(b);
+        });
+      }
+      mostra();
       document.body.append(capa);
     }
 
@@ -1372,9 +1463,9 @@
         const caixa = document.createElement('div');
         caixa.className = 'ic-shot';
         caixa.dataset.idea = idea.id;
-        caixa.textContent = '📷 carregant la captura…';
+        caixa.textContent = idea.img > 1 ? '📷 carregant les captures…' : '📷 carregant la captura…';
         card.append(caixa);
-        if (cacheImg[idea.id]) posaImatge(caixa, cacheImg[idea.id]);
+        if (cacheImg[idea.id]) posaImatges(caixa, cacheImg[idea.id]);
         else if (ioImg) ioImg.observe(caixa);
         else carregaImatge(caixa);
       }
@@ -1652,26 +1743,30 @@
       btn.disabled = true;
       msg.className = 'idea-msg';
 
-      const fitxer = inputFoto && inputFoto.files && inputFoto.files[0];
-      let foto = null;
-      if (fitxer) {
-        if (fitxer.type && fitxer.type.indexOf('image/') !== 0) {
+      const triades = inputFoto && inputFoto.files ? [].slice.call(inputFoto.files) : [];
+      const sobren = Math.max(0, triades.length - MAX_FOTOS);
+      const fitxers = triades.slice(0, MAX_FOTOS);
+      const fotos = [];
+      for (let i = 0; i < fitxers.length; i++) {
+        if (fitxers[i].type && fitxers[i].type.indexOf('image/') !== 0) {
           msg.className = 'idea-msg err';
-          msg.textContent = 'La captura ha de ser una imatge.';
+          msg.textContent = 'Les captures han de ser imatges.';
           btn.disabled = false;
           return;
         }
-        msg.textContent = 'Preparant la captura…';
+        msg.textContent = fitxers.length > 1
+          ? 'Preparant les captures… (' + (i + 1) + '/' + fitxers.length + ')'
+          : 'Preparant la captura…';
         try {
-          foto = await redueixImatge(fitxer);
-          idea.img = 1;
+          fotos.push(await redueixImatge(fitxers[i]));
         } catch (e) {
           msg.className = 'idea-msg err';
-          msg.textContent = 'No s\'ha pogut llegir la imatge. Prova amb una captura normal (JPG o PNG).';
+          msg.textContent = 'No s\'ha pogut llegir una de les imatges. Prova amb captures normals (JPG o PNG).';
           btn.disabled = false;
           return;
         }
       }
+      if (fotos.length) idea.img = fotos.length;
 
       msg.textContent = 'Desant…';
       try {
@@ -1679,9 +1774,17 @@
         guardaFluix('xina-idees-nom', idea.nom);
         inputNom.value = idea.nom;
         let avisFoto = '';
-        if (foto && id) {
-          try { await db.posaImatge(id, foto); cacheImg[id] = foto; }
-          catch (e) { avisFoto = ' (la captura no s\'ha pogut adjuntar)'; }
+        if (fotos.length && id) {
+          try { await db.posaImatges(id, fotos); cacheImg[id] = fotos; }
+          catch (e) {
+            avisFoto = fotos.length > 1
+              ? ' (les captures no s\'han pogut adjuntar)'
+              : ' (la captura no s\'ha pogut adjuntar)';
+          }
+        }
+        if (!avisFoto && sobren) {
+          avisFoto = ' Només hi caben ' + MAX_FOTOS + ' captures per idea: ' +
+            (sobren === 1 ? 'n\'ha quedat una fora.' : 'n\'han quedat ' + sobren + ' fora.');
         }
         document.getElementById('ideaTitol').value = '';
         document.getElementById('ideaNota').value = '';

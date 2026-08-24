@@ -80,7 +80,11 @@ si algun dia es passés, deixaria de servir, no cobraria.
 - El camp de data el posa el **rellotge del servidor**, no el mòbil de cada un.
 - Les captures es guarden a `/imatges`, separades de la llista: obrir la pàgina
   només baixa el text, i cada imatge arriba quan la seva targeta apareix a la
-  pantalla.
+  pantalla. (Compte per si algun dia es prova amb un navegador automatitzat:
+  amb `--virtual-time-budget` l'IntersectionObserver no dispara mai, així que
+  sembla que les captures no carreguin quan en realitat van bé.)
+- Agrupar targetes escriu a `/grups` i `/temes`, mai damunt de la idea: així la
+  regla de "una idea no es pot modificar" es manté intacta.
 - Al navegador es recorda quines idees has escrit tu, i només aquestes et
   deixen la paperera. És per comoditat, no és una tanca: qui sàpiga la URL de la
   base de dades hi pot esborrar coses. Per a una pàgina familiar va bé; si
@@ -88,11 +92,17 @@ si algun dia es passés, deixaria de servir, no cobraria.
 
 ### Captures de pantalla
 
-Es poden adjuntar directament: el navegador les redueix a 1300 px i ~190 kB
-abans d'enviar-les, i es veuen a la targeta (clic per obrir-les a pantalla
-completa). Si el que hi ha a la captura és text, a l'iPhone es pot **seleccionar
-i copiar el text de dins la imatge** i enganxar-lo al camp de detalls: així
-queda cercable. No hi ha cap OCR ni cap IA pel mig — ni cal clau de cap API.
+Es poden adjuntar directament, **fins a 6 en una mateixa idea**: el navegador les
+redueix a 1300 px i ~190 kB abans d'enviar-les. A la targeta es veu la primera
+gran i una tira de miniatures per canviar; clicant-hi s'obren a pantalla completa
+amb fletxes (i les tecles ← →). Si el que hi ha a la captura és text, a l'iPhone
+es pot **seleccionar i copiar el text de dins la imatge** i enganxar-lo al camp
+de detalls: així queda cercable. No hi ha cap OCR ni cap IA pel mig — ni cal
+clau de cap API.
+
+El límit de 6 és a les regles (`/imatges/<idea>/0…5`), no només al formulari. Les
+idees d'abans, amb una sola captura desada com a text pla, se segueixen llegint
+igual.
 
 ## Coses a tenir en compte
 
