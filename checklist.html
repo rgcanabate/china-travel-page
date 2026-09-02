@@ -270,6 +270,14 @@ function render(){
     });
   });
   document.getElementById('reset').addEventListener('click',()=>{
+    // Esborrar-ho tot no es pot desfer i la llista només viu en aquest
+    // navegador: val més una pregunta que no pas tornar a marcar 52 coses.
+    const done = DATA.reduce((n,sec)=>n+sec.items.filter(i=>state[i.id]).length,0);
+    if(!done) return;
+    const q = done===1
+      ? 'Vols desmarcar l\'única cosa que tens marcada?'
+      : 'Vols desmarcar les '+done+' coses que tens marcades?';
+    if(!confirm(q+'\n\nNo es pot desfer.')) return;
     state={}; render(); save(); updateCounts();
   });
   updateCounts();
@@ -283,6 +291,8 @@ function updateCounts(){
     const el = document.getElementById('c-'+sec.id);
     if(el) el.textContent = d+'/'+sec.items.length;
   });
+  const rst = document.getElementById('reset');
+  if(rst) rst.style.visibility = done ? 'visible' : 'hidden';
   const pct = total? Math.round(done/total*100):0;
   document.getElementById('pbar').style.width = pct+'%';
   document.getElementById('ptxt').textContent =
