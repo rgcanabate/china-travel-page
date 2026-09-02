@@ -104,6 +104,18 @@ El límit de 6 és a les regles (`/imatges/<idea>/0…5`), no només al formular
 idees d'abans, amb una sola captura desada com a text pla, se segueixen llegint
 igual.
 
+## Checklist de preparatius
+
+`checklist.html` és una segona pàgina, enllaçada des del menú i des de la
+Logística: tot el que cal comprar, instal·lar i posar a la maleta, amb compte
+enrere fins al vol. Es marca des del mòbil i l'estat es desa al `localStorage`
+d'aquell navegador — no es comparteix entre dispositius ni entre persones, que
+és el que volem (cadascú té la seva maleta).
+
+Compte si algun dia se n'edita el codi: la versió original feia servir
+`window.storage`, que només existeix dins d'un artifact de Claude i falla en
+silenci a GitHub Pages. Aquí és `localStorage` i ha de continuar sent-ho.
+
 ## Coses a tenir en compte
 
 - **Des de la Xina**: `github.io` s'ha bloquejat de manera intermitent allà. Amb la
