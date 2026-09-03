@@ -112,6 +112,16 @@ enrere fins al vol. Es marca des del mòbil i l'estat es desa al `localStorage`
 d'aquell navegador — no es comparteix entre dispositius ni entre persones, que
 és el que volem (cadascú té la seva maleta).
 
+Cadascú s'hi pot **afegir punts propis**: al final de cada apartat hi ha un espai
+per escriure. Surten marcats amb l'etiqueta «teva» i tenen una creu per treure'ls;
+les de la llista original no es poden esborrar. «Desmarcar-ho tot» només
+desmarca: no s'endú el que hagi escrit ningú.
+
+Les pròpies es desen a part (`xina-checklist-meves-v1`) de les caselles marcades
+(`xina-checklist-v1`), i com tota la resta viuen només en aquell navegador: el que
+afegeixi un no li apareix als altres tres. Si algun dia es vol una llista de
+veritat compartida, el lloc per fer-ho és Firebase, com el mur d'idees.
+
 Compte si algun dia se n'edita el codi: la versió original feia servir
 `window.storage`, que només existeix dins d'un artifact de Claude i falla en
 silenci a GitHub Pages. Aquí és `localStorage` i ha de continuar sent-ho.

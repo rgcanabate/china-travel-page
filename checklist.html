@@ -93,6 +93,36 @@
     letter-spacing:.04em;
   }
 
+  /* afegir-ne de noves */
+  .add{display:flex;gap:.5rem;margin:.7rem 0 .2rem;padding:0 .2rem}
+  .add input{
+    flex:1;min-width:0;font-family:inherit;font-size:.9rem;color:#1A0E0C;
+    background:#fff;border:1px dashed rgba(201,154,59,.65);border-radius:3px;
+    padding:.5rem .6rem;-webkit-appearance:none;
+  }
+  .add input::placeholder{color:#A79A90}
+  .add input:focus{outline:none;border-style:solid;border-color:var(--gold)}
+  .add button{
+    flex-shrink:0;font-family:inherit;font-size:1.1rem;line-height:1;font-weight:900;
+    color:var(--gold);background:none;border:1px solid rgba(201,154,59,.65);
+    border-radius:3px;padding:0 .85rem;cursor:pointer;
+  }
+  .add button:disabled{opacity:.4;cursor:default}
+  .add button:not(:disabled):hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+  /* esborrar una de pròpia */
+  .del{
+    flex-shrink:0;margin-left:auto;align-self:center;background:none;border:none;
+    color:#C4B6AC;font-family:inherit;font-size:1.25rem;line-height:1;
+    padding:.35rem .5rem;cursor:pointer;
+  }
+  .del:hover{color:var(--red)}
+  .mine .t::after{
+    content:'teva';font-size:.62rem;font-weight:700;color:var(--gold);
+    border:1px solid rgba(201,154,59,.6);border-radius:2px;
+    padding:.05rem .3rem;margin-left:.4rem;vertical-align:.12em;letter-spacing:.03em;
+  }
+
   /* reset */
   .reset{
     display:block;margin:2.5rem auto 0;background:none;border:1px solid rgba(139,125,114,.4);
@@ -238,7 +268,17 @@ const DATA = [
 
 const app = document.getElementById('app');
 const KEY = 'xina-checklist-v1';
-let state = {};
+const MINE = 'xina-checklist-meves-v1';
+let state = {};      // qui està marcat
+let mine = {};       // les que ha afegit qui fa servir aquest mòbil: {seccio:[{id,t}]}
+
+// El text el pica una persona: si hi posa un < o un &, que no trenqui la pàgina.
+function esc(t){
+  return String(t).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+// Les pròpies van després de les de la llista original
+function itemsOf(sec){ return sec.items.concat(mine[sec.id] || []); }
 
 function icon(){return '<svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg>'}
 
@@ -251,15 +291,20 @@ function render(){
         <span class="count" id="c-${sec.id}"></span>
       </div>
       ${sec.note?`<p class="sec-note">${sec.note}</p>`:''}
-      ${sec.items.map(it=>`
-        <label class="item${it.hot?' hot':''}">
+      ${itemsOf(sec).map(it=>`
+        <label class="item${it.hot?' hot':''}${it.meva?' mine':''}">
           <input type="checkbox" data-id="${it.id}" ${state[it.id]?'checked':''}>
           <span class="box">${icon()}</span>
           <span class="txt">
-            <span class="t">${it.t}${it.hot?'<span class="flag">CLAU</span>':''}</span>
-            ${it.d?`<span class="d">${it.d}</span>`:''}
+            <span class="t">${esc(it.t)}${it.hot?'<span class="flag">CLAU</span>':''}</span>
+            ${it.d?`<span class="d">${esc(it.d)}</span>`:''}
           </span>
+          ${it.meva?`<button type="button" class="del" data-del="${it.id}" data-sec="${sec.id}" aria-label="Esborrar">×</button>`:''}
         </label>`).join('')}
+      <form class="add" data-sec="${sec.id}">
+        <input type="text" maxlength="90" placeholder="Afegir una cosa…" aria-label="Afegir a ${esc(sec.title)}">
+        <button type="submit" disabled>+</button>
+      </form>
     </section>`).join('') +
     `<button class="reset" id="reset">Desmarcar-ho tot</button>`;
 
@@ -269,10 +314,39 @@ function render(){
       save(); updateCounts();
     });
   });
+  // Afegir-ne una de pròpia
+  app.querySelectorAll('form.add').forEach(f=>{
+    const camp = f.querySelector('input'), boto = f.querySelector('button');
+    camp.addEventListener('input',()=>{ boto.disabled = !camp.value.trim(); });
+    f.addEventListener('submit',e=>{
+      e.preventDefault();
+      const t = camp.value.trim();
+      if(!t) return;
+      const sec = f.dataset.sec;
+      (mine[sec] = mine[sec] || []).push({ id:nouId(), t, meva:true });
+      saveMine();
+      render();
+      // Torna el cursor al mateix lloc, que sovint se n'afegeixen unes quantes seguides
+      const seg = app.querySelector(`form.add[data-sec="${sec}"] input`);
+      if(seg) seg.focus();
+    });
+  });
+
+  // Esborrar-ne una de pròpia
+  app.querySelectorAll('button.del').forEach(b=>{
+    b.addEventListener('click',e=>{
+      e.preventDefault(); e.stopPropagation();   // que no marqui la casella
+      const {del, sec} = b.dataset;
+      mine[sec] = (mine[sec] || []).filter(i => i.id !== del);
+      delete state[del];
+      saveMine(); save(); render(); updateCounts();
+    });
+  });
+
   document.getElementById('reset').addEventListener('click',()=>{
     // Esborrar-ho tot no es pot desfer i la llista només viu en aquest
     // navegador: val més una pregunta que no pas tornar a marcar 52 coses.
-    const done = DATA.reduce((n,sec)=>n+sec.items.filter(i=>state[i.id]).length,0);
+    const done = DATA.reduce((n,sec)=>n+itemsOf(sec).filter(i=>state[i.id]).length,0);
     if(!done) return;
     const q = done===1
       ? 'Vols desmarcar l\'única cosa que tens marcada?'
@@ -286,10 +360,11 @@ function render(){
 function updateCounts(){
   let total=0, done=0;
   DATA.forEach(sec=>{
-    const d = sec.items.filter(i=>state[i.id]).length;
-    total += sec.items.length; done += d;
+    const items = itemsOf(sec);
+    const d = items.filter(i=>state[i.id]).length;
+    total += items.length; done += d;
     const el = document.getElementById('c-'+sec.id);
-    if(el) el.textContent = d+'/'+sec.items.length;
+    if(el) el.textContent = d+'/'+items.length;
   });
   const rst = document.getElementById('reset');
   if(rst) rst.style.visibility = done ? 'visible' : 'hidden';
@@ -306,9 +381,18 @@ function toast(){
   toastT=setTimeout(()=>t.classList.remove('show'),1100);
 }
 
+function nouId(){
+  return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+}
+
 function save(){
   try{ localStorage.setItem(KEY, JSON.stringify(state)); toast(); }
   catch(e){ /* navegació privada o sense espai: continua en memòria */ }
+}
+
+function saveMine(){
+  try{ localStorage.setItem(MINE, JSON.stringify(mine)); toast(); }
+  catch(e){ /* igual: es queda només en memòria fins que es tanqui */ }
 }
 
 function load(){
@@ -316,6 +400,10 @@ function load(){
     const r = localStorage.getItem(KEY);
     if(r) state = JSON.parse(r);
   }catch(e){ state={}; }
+  try{
+    const m = localStorage.getItem(MINE);
+    if(m) mine = JSON.parse(m);
+  }catch(e){ mine={}; }
   render();
 }
 
